@@ -83,7 +83,6 @@ gem 'google-cloud-storage', '~> 1.26'
 gem 'pluck_to_hash', '~> 1.0.2'
 
 group :production do
-  gem 'sqlite3', '~> 1.3.6'
   # Use a postgres database in production.
   gem 'pg', '~> 1.2'
   gem 'sequel'
@@ -104,8 +103,6 @@ group :development, :test do
   gem 'byebug', platform: :mri
   # Environment configuration.
   gem 'dotenv-rails'
-  # Use a sqlite database in test and development.
-  gem 'sqlite3', '~> 1.3.6'
 end
 
 group :test do
