@@ -4,7 +4,7 @@ services:
   app:
     entrypoint: [bin/start]
     image: zhengxueming93/letsmeet:latest
-    container_name: greenlight-v2
+    container_name: letsmeet
     env_file: .env
     restart: unless-stopped
     ports:
@@ -31,6 +31,6 @@ services:
     volumes:
       - ./db/production:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=postgres
+      - POSTGRES_DB=greenlight_production
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
