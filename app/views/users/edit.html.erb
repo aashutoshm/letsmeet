@@ -1,35 +1,26 @@
-<%
-# BigBlueButton open source conferencing system - http://www.bigbluebutton.org/.
-# Copyright (c) 2018 BigBlueButton Inc. and by respective authors (see below).
-# This program is free software; you can redistribute it and/or modify it under the
-# terms of the GNU Lesser General Public License as published by the Free Software
-# Foundation; either version 3.0 of the License, or (at your option) any later
-# version.
-#
-# BigBlueButton is distributed in the hope that it will be useful, but WITHOUT ANY
-# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-# PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
-# You should have received a copy of the GNU Lesser General Public License along
-# with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
-%>
-<div class="container pt-6">
-  <%= render "shared/components/subtitle", subtitle: t("settings.title"), search: false %>
-
-  <div class="row">
-    <div class="col-lg-3 mb-4">
-      <%= render "users/components/menu_buttons" %>
-
-      <% if @user.errors.any? %>
-        <h5 class="mt-8"><%= t("errors.title") %>:</h5>
-        <ul>
-        <% @user.errors.full_messages.each do |err| %>
-          <li class="text-danger"><%= err %>.</li>
-        <% end %>
-        </ul>
-      <% end %>
+<div class="container-fluid my-profile">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card profile">
+                <div class="desc">
+                    <img src="/img/prof1.png" alt="John" style="width:100%">
+                    <h3>John Doe</h3>
+                    <p class="title">Software Developer</p>
+                    <p class="profile-location"><i class="fas fa-map-marker-alt"></i> Mumbai</p>
+                    <div class="contact-info">
+                        <p><a href="#">johndoe@gmail.com</a></p>
+                        <p><a href="#">+91 12455847978</a></p>
+                    </div>
+                    <div class="about-profile">
+                        <p>
+                            I am content marketing professional at Google, and graduated with honors from Columbia University with a dual degree in Business Administration and Creative Writing.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <%= render "users/components/setting_view", setting_id: "account", setting_title: t("settings.account.subtitle") %>
+        </div>
     </div>
-    <div class="col-lg-9">
-      <%= render "users/components/setting_view", setting_id: "account", setting_title: t("settings.account.subtitle") %>
-    </div>
-  </div>
 </div>

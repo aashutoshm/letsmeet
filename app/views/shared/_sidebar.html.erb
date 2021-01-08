@@ -1,0 +1,52 @@
+<ul class="navbar-nav bg-gradient-default sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <div class="sidebar-brand d-flex align-items-center">
+        <%= link_to (current_user ? home_page : root_path), class: "d-flex align-items-center" do %>
+            <% begin %>
+                <div class="sidebar-brand-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">LetsMeet</div>
+            <% rescue %>
+                <%= t("administrator.site_settings.branding.invalid") %>
+            <% end %>
+        <% end %>
+        <div class="text-center d-none d-md-inline collapse-btn">
+            <button class="rounded-circle border-0 shadow" id="sidebarToggle"></button>
+        </div>
+    </div>
+
+    <!-- Divider -->
+    <!-- <hr class="sidebar-divider my-0"> -->
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active border-right-primary">
+        <a class="nav-link" href="index.html">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+    </li>
+    <li class="nav-item ">
+        <a class="nav-link" href="#">
+            <i class="fa fa-phone"></i>
+            <span>Call History</span></a>
+    </li>
+    <li class="nav-item ">
+        <a class="nav-link" href="#">
+            <i class="far fa-calendar-alt"></i>
+            <span>Schedule</span></a>
+    </li>
+    <li class="nav-item ">
+        <a class="nav-link" href="#">
+            <i class="far fa-address-book"></i>
+            <span>Contacts</span></a>
+    </li>
+
+
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <!-- <div class="text-center d-none d-md-inline">
+      <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div> -->
+
+</ul>

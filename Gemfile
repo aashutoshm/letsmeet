@@ -84,7 +84,7 @@ gem 'pluck_to_hash', '~> 1.0.2'
 
 group :production do
   # Use a postgres database in production.
-  gem 'pg', '~> 0.18'
+  gem 'pg', '~> 1.2'
   gem 'sequel'
 
   # For a better logging library in production
@@ -104,7 +104,7 @@ group :development, :test do
   # Environment configuration.
   gem 'dotenv-rails'
   # Use a sqlite database in test and development.
-  gem 'sqlite3', '~> 1.3.6'
+  gem 'sqlite3',  git: "https://github.com/larskanis/sqlite3-ruby", branch: "add-gemspec"
 end
 
 group :test do

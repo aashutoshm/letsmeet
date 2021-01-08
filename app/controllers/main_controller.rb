@@ -17,12 +17,12 @@
 # with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
 class MainController < ApplicationController
-  include Registrar
-  # GET /
-  def index
-    # Store invite token
-    session[:invite_token] = params[:invite_token] if params[:invite_token] && invite_registration
+    include Registrar
+    # GET /
+    def index
+        # Store invite token
+        session[:invite_token] = params[:invite_token] if params[:invite_token] && invite_registration
 
-    redirect_to home_page if current_user
-  end
+        redirect_to home_page if current_user
+    end
 end
