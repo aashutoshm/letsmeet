@@ -103,8 +103,6 @@ group :development, :test do
   gem 'byebug', platform: :mri
   # Environment configuration.
   gem 'dotenv-rails'
-  # Use a sqlite database in test and development.
-  gem 'sqlite3',  git: "https://github.com/larskanis/sqlite3-ruby", branch: "add-gemspec"
 end
 
 group :test do
