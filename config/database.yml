@@ -4,24 +4,28 @@ default: &default
 
 development:
   <<: *default
-  adapter: <%= ENV['DB_ADAPTER'] || 'sqlite3' %>
+  adapter: <%= ENV['DB_ADAPTER'] || 'postgresql' %>
   host: <%= ENV['DB_HOST'] %>
-  port: <%= ENV['DB_PORT' || '5432'] %>
-  database: <%= ENV['DB_NAME'] || 'db/production/production.sqlite3' %>
+  port: <%= ENV['DB_PORT'] %>
+  database: <%= ENV['DB_NAME'] || 'db/production/production.postgresql' %>
   username: <%= ENV['DB_USERNAME'] %>
   password: <%= ENV['DB_PASSWORD'] %>
 
 test:
   <<: *default
-  adapter: sqlite3
-  database: db/test.sqlite3
+  adapter: postgresql
+  host: <%= ENV['DB_HOST'] %>
+  port: <%= ENV['DB_PORT'] %>
+  database: <%= ENV['DB_NAME'] || 'db/production/production.postgresql' %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
 
 # Use sqlite in production by default. Greenlight supports
 production:
   <<: *default
-  adapter: <%= ENV['DB_ADAPTER'] || 'sqlite3' %>
+  adapter: <%= ENV['DB_ADAPTER'] || 'postgresql' %>
   host: <%= ENV['DB_HOST'] %>
-  port: <%= ENV['DB_PORT' || '5432'] %>
-  database: <%= ENV['DB_NAME'] || 'db/production/production.sqlite3' %>
+  port: <%= ENV['DB_PORT'] %>
+  database: <%= ENV['DB_NAME'] || 'db/production/production.postgresql' %>
   username: <%= ENV['DB_USERNAME'] %>
   password: <%= ENV['DB_PASSWORD'] %>
