@@ -74,6 +74,8 @@
         <div id="content">
             <%= render "shared/topnav" %>
 
+            <%= render 'shared/flash_messages' unless flash.empty? %>
+
             <%= yield %>
         </div>
 

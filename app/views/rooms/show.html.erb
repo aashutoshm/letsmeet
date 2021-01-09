@@ -1,140 +1,579 @@
-<%
-# BigBlueButton open source conferencing system - http://www.bigbluebutton.org/.
-# Copyright (c) 2018 BigBlueButton Inc. and by respective authors (see below).
-# This program is free software; you can redistribute it and/or modify it under the
-# terms of the GNU Lesser General Public License as published by the Free Software
-# Foundation; either version 3.0 of the License, or (at your option) any later
-# version.
-#
-# BigBlueButton is distributed in the hope that it will be useful, but WITHOUT ANY
-# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-# PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
-# You should have received a copy of the GNU Lesser General Public License along
-# with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
-%>
+<div class="container-fluid">
 
-<% exceeds_limit = current_room_exceeds_limit(@room)%>
-<% if exceeds_limit%>
-  <div class="alert alert-danger alert-dismissible text-center mb-0">
-    <%= t("room.room_limit_exceeded", difference: @diff) %>
-  </div>
-<% end %>
-<div class="background pb-1">
-  <div class="container">
-    <div class="row pt-7 pt-sm-9 mb-7">
-      <div class="col-lg-9 col-sm-12">
-        <div id="room-title" class="display-3 form-inline <%= 'edit_hover_class' if current_user.main_room != @room %>" data-path="<%= update_settings_path(@room) %>">
-           <h1 contenteditable=false id="user-text" class="display-3 text-left mb-3 font-weight-400"><%= title(@room.name) %></h1>
-          <% if current_user.main_room == @room %>
-            <a class="disable-click"><i class="fas fa-home align-top home-indicator ml-2"></i></a>
-          <% else %>
-            <a><i id="edit-room" class="fa fa-edit align-top home-indicator ml-2" data-edit-room="<%= @room.uid %>"></i></a>
-          <% end %>
+    <div class="row">
+
+        <!-- Area Chart -->
+        <div class="col-xl-9 col-lg-9">
+            <div class="card shadow mb-4">
+
+                <!-- Card Body -->
+                <div class="card-body bg-primary rounded">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5 class="m-0 font-weight-bold text-white">Welcome back John!</h5>
+                                <h6 class="mt-2 mb-0 font-weight-light text-white">Book meetings with your
+                                    friends,colleagues and clients.</h6>
+                                <h6 class="mt-2 font-weight-light text-white ">Your calendar stays full and
+                                    you stay profuctive</h6>
+
+                                <a href="#" class="btn btn-Secondary bg-white text-black mt-4"><b
+                                    class="meet">SCHEDULE A MEETING</b></a>
+                            </div>
+                            <div class="col-md-6">
+                                <img src="img/OBJECTS.png" class="float-right" alt="img">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Project Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h4 class="m-0 font-weight-bold tcolor">Most Recent calls</h4>
+
+                </div>
+                <div class="card-body">
+
+
+                    <table class="table table-bordered dash-record" id="dataTable">
+                        <thead class="bg-light">
+                        <tr>
+                            <th scope="col">Metting Code</th>
+                            <th scope="col">Metting Name</th>
+                            <th scope="col">Start Time</th>
+                            <th scope="col">Participants</th>
+                            <th scope="col">Recorded</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">MC04232322</th>
+                            <td><b>Management Meeting</b></td>
+                            <td><b>31/08/2020</b> 02.00 PM</td>
+                            <td>
+                                <div class="image-stack">
+                                    <div class="image-stack__item image-stack__item--top">
+                                        <img src="img/prof1.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom">
+                                        <img src="img/prof2.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom counter">+5
+                                    </div>
+                                </div>
+                            </td>
+                            <td><i class="fas fa-microphone"></i> 45.45</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">MC04232322</th>
+                            <td><b>Developer Meeting</b></td>
+                            <td><b>31/08/2020</b> 02.00 PM</td>
+                            <td>
+                                <div class="image-stack">
+                                    <div class="image-stack__item image-stack__item--top">
+                                        <img src="img/prof1.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom">
+                                        <img src="img/prof2.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom counter">+5
+                                    </div>
+                                </div>
+                            </td>
+                            <td><i class="fas fa-microphone"></i> 45.45</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">MC04232322</th>
+                            <td><b>Management Meeting</b></td>
+                            <td><b>31/08/2020</b> 02.00 PM</td>
+                            <td>
+                                <div class="image-stack">
+                                    <div class="image-stack__item image-stack__item--top">
+                                        <img src="img/prof1.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom">
+                                        <img src="img/prof2.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom counter">+5
+                                    </div>
+                                </div>
+                            </td>
+                            <td><i class="fas fa-microphone"></i> 45.45</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">MC04232322</th>
+                            <td><b>Management Meeting</b></td>
+                            <td><b>31/08/2020</b> 02.00 PM</td>
+                            <td>
+                                <div class="image-stack">
+                                    <div class="image-stack__item image-stack__item--top">
+                                        <img src="img/prof1.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom">
+                                        <img src="img/prof2.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom counter">+5
+                                    </div>
+                                </div>
+                            </td>
+                            <td><i class="fas fa-microphone"></i> 45.45</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">MC04232322</th>
+                            <td><b>Management Meeting</b></td>
+                            <td><b>31/08/2020</b> 02.00 PM</td>
+                            <td>
+                                <div class="image-stack">
+                                    <div class="image-stack__item image-stack__item--top">
+                                        <img src="img/prof1.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom">
+                                        <img src="img/prof2.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom counter">+5
+                                    </div>
+                                </div>
+                            </td>
+                            <td><i class="fas fa-microphone"></i> 45.45</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">MC04232322</th>
+                            <td><b>Management Meeting</b></td>
+                            <td><b>31/08/2020</b> 02.00 PM</td>
+                            <td>
+                                <div class="image-stack">
+                                    <div class="image-stack__item image-stack__item--top">
+                                        <img src="img/prof1.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom">
+                                        <img src="img/prof2.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom counter">+5
+                                    </div>
+                                </div>
+                            </td>
+                            <td><i class="fas fa-microphone"></i> 45.45</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">MC04232322</th>
+                            <td><b>Management Meeting</b></td>
+                            <td><b>31/08/2020</b> 02.00 PM</td>
+                            <td>
+                                <div class="image-stack">
+                                    <div class="image-stack__item image-stack__item--top">
+                                        <img src="img/prof1.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom">
+                                        <img src="img/prof2.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom counter">+5
+                                    </div>
+                                </div>
+                            </td>
+                            <td><i class="fas fa-microphone"></i> 45.45</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">MC04232322</th>
+                            <td><b>Management Meeting</b></td>
+                            <td><b>31/08/2020</b> 02.00 PM</td>
+                            <td>
+                                <div class="image-stack">
+                                    <div class="image-stack__item image-stack__item--top">
+                                        <img src="img/prof1.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom">
+                                        <img src="img/prof2.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom counter">+5
+                                    </div>
+                                </div>
+                            </td>
+                            <td><i class="fas fa-microphone"></i> 45.45</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">MC04232322</th>
+                            <td><b>Management Meeting</b></td>
+                            <td><b>31/08/2020</b> 02.00 PM</td>
+                            <td>
+                                <div class="image-stack">
+                                    <div class="image-stack__item image-stack__item--top">
+                                        <img src="img/prof1.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom">
+                                        <img src="img/prof2.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom counter">+5
+                                    </div>
+                                </div>
+                            </td>
+                            <td><i class="fas fa-microphone"></i> 45.45</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">MC04232322</th>
+                            <td><b>Management Meeting</b></td>
+                            <td><b>31/08/2020</b> 02.00 PM</td>
+                            <td>
+                                <div class="image-stack">
+                                    <div class="image-stack__item image-stack__item--top">
+                                        <img src="img/prof1.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom">
+                                        <img src="img/prof2.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom counter">+5
+                                    </div>
+                                </div>
+                            </td>
+                            <td><i class="fas fa-microphone"></i> 45.45</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">MC04232322</th>
+                            <td><b>Management Meeting</b></td>
+                            <td><b>31/08/2020</b> 02.00 PM</td>
+                            <td>
+                                <div class="image-stack">
+                                    <div class="image-stack__item image-stack__item--top">
+                                        <img src="img/prof1.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom">
+                                        <img src="img/prof2.png" alt="">
+                                    </div>
+                                    <div class="image-stack__item image-stack__item--bottom counter">+5
+                                    </div>
+                                </div>
+                            </td>
+                            <td><i class="fas fa-microphone"></i> 45.45</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Color System -->
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="card bg-white text-black shadow">
+                        <div class="card-body">
+                            <div class="container-fluid">
+                                <div class="row">
+
+                                    <div class="col-md-4">
+                                        <div class="numberCircle cnew"><b>192</b></div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h5 class="mb-0"><b>Meetings</b></h5>
+                                        <small>This Year</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 mb-4">
+                    <div class="card bg-white text-black shadow">
+                        <div class="card-body">
+                            <div class="container-fluid">
+                                <div class="row">
+
+                                    <div class="col-md-4">
+                                        <div class="numberCircle dnew"><b>156</b></div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h5 class="mb-0"><b>Meetings</b></h5>
+                                        <small>This Month</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 mb-4">
+                    <div class="card bg-white text-black shadow">
+                        <div class="card-body">
+                            <div class="container-fluid">
+                                <div class="row">
+
+                                    <div class="col-md-4">
+                                        <div class="numberCircle enew"><b>208</b></div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h5 class="mb-0"><b>Meetings</b></h5>
+                                        <small>This Week</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <h4 class="text-left mb-6"><%= @room.sessions %> <%= t("room.sessions") %><% unless hide_recording_tables %> | <%= @recordings.length %> <%= t("room.recordings") %><% end %></h4>
-        <% unless exceeds_limit %>
-          <label class="form-label"><%= t("room.invite_participants") %></label>
-          <div class="row">
-            <div class="col-lg-6 col-md-12 mt-2">
-              <div class="input-icon invite-link-input">
-                <span class="input-icon-addon">
-                  <i class="fas fa-link"></i>
-                </span>
-                <input id="invite-url" type="text" class="form-control w-100" value="<%= request.base_url + @room.invite_path %>" readonly="">
-              </div>
-            </div>
-            <div class="col-lg-6 pr-lg-7 col-md-12 pl-lg-0">
-              <div class="row">
-                <div class="col-sm-6 mt-2">
-                  <button id="copy-invite" class="btn btn-primary btn-block" onclick="copyInvite()">
-                    <i class="fas fa-copy mr-1"></i>
-                    <%= t("copy") %>
-                  </button>
+
+
+        <!-- Pie Chart -->
+        <div class="col-xl-3 col-lg-3 upcoming-events">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h4 class="m-0 font-weight-bold e33">Upcoming Meetings</h4>
                 </div>
-                <div class="col-sm-6 pl-0 mt-2">
-                  <% if @room.access_code.present? %>
-                    <input id="copy-code" value="<%= @room.access_code %>" type="hidden">
-                    <button id="copy-access" class="btn btn-secondary btn-block" onclick="copyAccess()">
-                      <i class="fas fa-copy mr-1"></i>
-                      <%= t("room.copy_access") %>
-                    </button>
-                  <% end %>
-                  <% if Rails.configuration.enable_google_calendar_button %>
-                    <a href="<%= google_calendar_path %>" target="__blank" id="schedule" class="btn btn-primary btn-block mt-2">
-                      <i class="fas fa-calendar-plus"></i>
-                      <%= t("add_to_google_calendar") %>
-                    </a>
-                  <% end %>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <h5 class="text-black font-weight-bold"><b class="b66">Company Policy Discussion</b>
+                    </h5>
+                    <h6>28th May 2020, Saturday</h6>
+                    <h6>03:30pm to 04:00pm</h6>
+                    <div class="image-stack">
+                        <div class="image-stack__item image-stack__item--top">
+                            <img src="img/prof3.png" alt="">
+                        </div>
+                        <div class="image-stack__item image-stack__item--middle">
+                            <img src="img/prof1.png" alt="">
+                        </div>
+                        <div class="image-stack__item image-stack__item--bottom">
+                            <img src="img/prof2.png" alt="">
+                        </div>
+                        <div class="image-stack__item image-stack__item--bottom counter">+3 more</div>
+                    </div>
+                    <!-- <h5 class="text-black font-weight-bold">Organised By</h5> -->
+                    <div class="container-fluid p-0">
+                        <div class="row">
+                            <div class="col-md-12 pt-2 pb-2">
+                                <h5 class="new-color">Organized by</h5>
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <img src="img/bot.png" alt="" class="float-left">
+                            </div>
+                            <div class="col-md-10">
+                                <h6 class="mb-0"><b>John Wrick</b></h6>
+                                <small class="new-color">john@gmail.com</small>
+                            </div>
+                            <div class="input-group inde">
+                                <select class="home-p">
+                                    <option>Cancel</option>
+                                    <option>Send Regret</option>
+                                    <option>Reschedule</option>
+                                </select>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary meetb inb" type="button">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr class="sidebar-divider">
+
+                    <h5 class="text-black font-weight-bold"><b>Developer Meeting</b> <sup
+                        class="text-danger">Important</sup></h5>
+                    <h6>28th May 2020, Saturday</h6>
+                    <h6>03:30pm to 04:00pm</h6>
+                    <div class="image-stack">
+                        <div class="image-stack__item image-stack__item--top">
+                            <img src="img/prof3.png" alt="">
+                        </div>
+                        <div class="image-stack__item image-stack__item--middle">
+                            <img src="img/prof1.png" alt="">
+                        </div>
+                        <div class="image-stack__item image-stack__item--bottom">
+                            <img src="img/prof2.png" alt="">
+                        </div>
+                        <div class="image-stack__item image-stack__item--bottom counter">+3 more</div>
+                    </div>
+
+                    <div class="container-fluid p-0">
+                        <div class="row">
+                            <div class="col-md-12 pt-2 pb-2">
+                                <h5 class="new-color">Organized by</h5>
+
+                            </div>
+                            <div class="col-md-2">
+                                <img src="img/bot.png" alt="" class="float-left">
+                            </div>
+
+                            <div class="col-md-10">
+                                <h6 class="mb-0"><b>John Wrick</b></h6>
+                                <small class="new-color">john@gmail.com</small>
+                            </div>
+                            <div class="input-group inde">
+                                <select class="home-p">
+                                    <option>Cancel</option>
+                                    <option>Send Regret</option>
+                                    <option>Reschedule</option>
+                                </select>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary meetb inb" type="button">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="sidebar-divider">
+
+                    <h5 class="text-black font-weight-bold"><b>Developer Meeting</b> <sup
+                        class="text-danger">Important</sup></h5>
+                    <h6>28th May 2020, Saturday</h6>
+                    <h6>03:30pm to 04:00pm</h6>
+                    <div class="image-stack">
+                        <div class="image-stack__item image-stack__item--top">
+                            <img src="img/prof3.png" alt="">
+                        </div>
+                        <div class="image-stack__item image-stack__item--middle">
+                            <img src="img/prof1.png" alt="">
+                        </div>
+                        <div class="image-stack__item image-stack__item--bottom">
+                            <img src="img/prof2.png" alt="">
+                        </div>
+                        <div class="image-stack__item image-stack__item--bottom counter">+3 more</div>
+                    </div>
+
+
+                    <div class="container-fluid p-0">
+                        <div class="row">
+                            <div class="col-md-12 pt-2 pb-2">
+                                <h5 class="new-color">Organized by</h5>
+
+                            </div>
+                            <div class="col-md-2">
+                                <img src="img/bot.png" alt="" class="float-left">
+                            </div>
+
+                            <div class="col-md-10">
+                                <h6 class="mb-0"><b>John Wrick</b></h6>
+                                <small class="new-color">john@gmail.com</small>
+                            </div>
+                            <div class="input-group inde">
+                                <select class="home-p">
+                                    <option>Cancel</option>
+                                    <option>Send Regret</option>
+                                    <option>Reschedule</option>
+                                </select>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary meetb inb" type="button">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr class="sidebar-divider">
+
+                    <h5 class="text-black font-weight-bold"><b>Testers Meeting</b> <sup class="text-danger">Important</sup>
+                    </h5>
+                    <h6>28th May 2020, Saturday</h6>
+                    <h6>03:30pm to 04:00pm</h6>
+                    <div class="image-stack">
+                        <div class="image-stack__item image-stack__item--top">
+                            <img src="img/prof3.png" alt="">
+                        </div>
+                        <div class="image-stack__item image-stack__item--middle">
+                            <img src="img/prof1.png" alt="">
+                        </div>
+                        <div class="image-stack__item image-stack__item--bottom">
+                            <img src="img/prof2.png" alt="">
+                        </div>
+                        <div class="image-stack__item image-stack__item--bottom counter">+3 more</div>
+                    </div>
+
+
+                    <div class="container-fluid p-0">
+                        <div class="row">
+                            <div class="col-md-12 pt-2 pb-2">
+                                <h5 class="new-color">Organized by</h5>
+
+                            </div>
+                            <div class="col-md-2">
+                                <img src="img/bot.png" alt="" class="float-left">
+                            </div>
+
+                            <div class="col-md-10">
+                                <h6 class="mb-0"><b>John Wrick</b></h6>
+                                <small class="new-color">john@gmail.com</small>
+                            </div>
+                            <div class="input-group inde">
+                                <select class="home-p">
+                                    <option>Cancel</option>
+                                    <option>Send Regret</option>
+                                    <option>Reschedule</option>
+                                </select>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary meetb inb" type="button">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <hr class="sidebar-divider">
+
+                    <h5 class="text-black font-weight-bold"><b>Designer Meeting</b> <sup
+                        class="text-danger">Important</sup></h5>
+                    <h6>28th May 2020, Saturday</h6>
+                    <h6>03:30pm to 04:00pm</h6>
+                    <div class="image-stack">
+                        <div class="image-stack__item image-stack__item--top">
+                            <img src="img/prof3.png" alt="">
+                        </div>
+                        <div class="image-stack__item image-stack__item--middle">
+                            <img src="img/prof1.png" alt="">
+                        </div>
+                        <div class="image-stack__item image-stack__item--bottom">
+                            <img src="img/prof2.png" alt="">
+                        </div>
+                        <div class="image-stack__item image-stack__item--bottom counter">+3 more</div>
+                    </div>
+
+
+                    <div class="container-fluid p-0">
+                        <div class="row">
+                            <div class="col-md-12 pt-2 pb-2">
+                                <h5 class="new-color">Organized by</h5>
+
+                            </div>
+                            <div class="col-md-2">
+                                <img src="img/bot.png" alt="" class="float-left">
+                            </div>
+
+                            <div class="col-md-10">
+                                <h6 class="mb-0"><b>John Wrick</b></h6>
+                                <small class="new-color">john@gmail.com</small>
+                            </div>
+                            <div class="input-group inde">
+                                <select class="home-p">
+                                    <option>Cancel</option>
+                                    <option>Send Regret</option>
+                                    <option>Reschedule</option>
+                                </select>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary meetb inb" type="button">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
-              </div>
             </div>
-          </div>
-        <% end %>
-      </div>
-      <div class="col-lg-3 col-sm-12 force-bottom mt-5">
-        <% if @room_running %>
-          <%= button_to t("room.join"), room_path(@room), class: "btn btn-primary btn-block px-7 start-button float-right", "data-disable": "" %>
-        <% else %>
-          <% unless exceeds_limit %>
-            <%= button_to t("room.start"), start_room_path(@room), class: "btn btn-primary btn-block px-7 start-button float-right", "data-disable": "" %>
-          <% end %>
-        <% end %>
-      </div>
+        </div>
     </div>
-
-    <% if current_user.ordered_rooms.length > 5 %>
-      <div class="input-icon invite-link-input mb-3">
-        <span class="input-icon-addon">
-          <i class="fas fa-search"></i>
-          </span>
-        <input id="room-search" type="text" placeholder="<%= t("room.search") %>" class="form-control w-100" onChange="filterRooms()" onKeyUp="filterRooms()">
-        <span id="clear-room-search" class="text-primary" onclick="clearRoomSearch()">
-          <i class="fas fa-times"></i>
-        </span>
-      </div>
-    <% end %>
-
-    <div id="room_block_container" class="row mb-5">
-      <% if current_user.role.get_permission("can_create_rooms") %>
-        <% current_user.ordered_rooms.each do |room| %>
-          <div class="col-lg-4 col-md-6 col-sm-12">
-            <%= link_to room do %>
-              <%= render "rooms/components/room_block", room: room %>
-            <% end %>
-          </div>
-        <% end %>
-      <% end %>
-
-      <% if shared_access_allowed %>
-        <% current_user.shared_rooms.each do |room| %>
-          <div class="col-lg-4 col-md-6 col-sm-12">
-            <%= link_to room do %>
-              <%= render "rooms/components/shared_room_block", room: room %>
-            <% end %>
-          </div>
-        <% end %>
-      <% end %>
-
-      <% if current_user.role.get_permission("can_create_rooms") && !room_limit_exceeded %>
-        <%= render "rooms/components/create_room_block"%>
-      <% end %>
-    </div>
-  </div>
 </div>
-
-<% unless hide_recording_tables %>
-  <%= render "shared/sessions", recordings: @recordings, pagy: @pagy, only_public: false, shared_room: @shared_room, user_recordings: false, title: t("room.recordings")%>
-<% end %>
-
-<%= render "shared/modals/delete_room_modal" %>
-
-<%= render "shared/modals/create_room_modal" %>
-
-<% if preupload_allowed? %>
-  <%= render "shared/modals/preupload_presentation_modal" %>
-<% end %>
-
-<% if shared_access_allowed %>
-  <%= render "shared/modals/share_room_modal" %>
-  <%= render "shared/modals/remove_access_modal" %>
-<% end %>

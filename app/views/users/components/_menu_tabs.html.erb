@@ -1,0 +1,14 @@
+<ul class="nav nav-pills nav-fill mb-4">
+    <li class="nav-item">
+        <a class="nav-link <%= params[:action] == 'edit' ? 'active' : '' %>" href="<%= edit_user_path(current_user) %>">Account Settings</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="">Documents</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="">Usage</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="">Notifications</a>
+    </li>
+</ul>

@@ -17,20 +17,20 @@
 # with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
 class CreateUsers < ActiveRecord::Migration[5.0]
-  def change
-    create_table :users do |t|
-      t.belongs_to :room, index: true
-      t.string :provider
-      t.string :uid
-      t.string :name
-      t.string :username
-      t.string :email
-      t.string :social_uid
-      t.string :image
-      t.string :password_digest, index: { unique: true }
-      t.boolean :accepted_terms, default: false
+    def change
+        create_table :users do |t|
+            t.belongs_to :room, index: true
+            t.string :provider
+            t.string :uid
+            t.string :name
+            t.string :username
+            t.string :email
+            t.string :social_uid
+            t.string :image
+            t.string :password_digest, index: { unique: true }
+            t.boolean :accepted_terms, default: false
 
-      t.timestamps
+            t.timestamps
+        end
     end
-  end
 end

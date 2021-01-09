@@ -1,26 +1,76 @@
+<% readonly = !can_edit_user?(@user, current_user) %>
+
 <div class="container-fluid my-profile">
     <div class="row">
         <div class="col-md-3">
-            <div class="card profile">
-                <div class="desc">
-                    <img src="/img/prof1.png" alt="John" style="width:100%">
-                    <h3>John Doe</h3>
-                    <p class="title">Software Developer</p>
-                    <p class="profile-location"><i class="fas fa-map-marker-alt"></i> Mumbai</p>
-                    <div class="contact-info">
-                        <p><a href="#">johndoe@gmail.com</a></p>
-                        <p><a href="#">+91 12455847978</a></p>
-                    </div>
-                    <div class="about-profile">
-                        <p>
-                            I am content marketing professional at Google, and graduated with honors from Columbia University with a dual degree in Business Administration and Creative Writing.
-                        </p>
+            <%= render "users/components/profile" %>
+        </div>
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-body p-5">
+                    <%= render "users/components/menu_tabs" %>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active">
+                            <%= form_for @user, url: update_user_path, method: :post do |f| %>
+                                <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <%= f.label :first_name, "First name" %>
+                                        <%= f.text_field :first_name, class: "form-control #{form_is_invalid?(@user, :first_name)}", placeholder: 'First Name', readonly: readonly, required: true %>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <%= f.label :last_name, "Last name" %>
+                                        <%= f.text_field :last_name, class: "form-control #{form_is_invalid?(@user, :last_name)}", placeholder: 'Last Name', readonly: readonly, required: true %>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <%= f.label :phone, "Phone Number" %>
+                                        <%= f.text_field :phone, class: "form-control #{form_is_invalid?(@user, :phone)}", placeholder: 'Phone Number', readonly: readonly, required: true %>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <%= f.label :email, t("email") %>
+                                        <%= f.email_field :email, class: "form-control #{form_is_invalid?(@user, :email)}", required: true, placeholder: t("email"), readonly: readonly %>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <%= f.label :city, "City" %>
+                                        <%= f.text_field :city, class: "form-control #{form_is_invalid?(@user, :city)}", placeholder: 'City', readonly: readonly %>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <%= f.label :state, "State" %>
+                                        <%= f.text_field :state, class: "form-control #{form_is_invalid?(@user, :state)}", placeholder: 'State', readonly: readonly %>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <%= f.label :postal_code, "Postal code" %>
+                                        <%= f.text_field :postal_code, class: "form-control #{form_is_invalid?(@user, :postal_code)}", placeholder: 'Postal code', readonly: readonly %>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <%= f.label :country, "Country" %>
+                                        <%= f.text_field :country, class: "form-control #{form_is_invalid?(@user, :country)}", placeholder: 'Country', readonly: readonly %>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <%= f.label :bio, "Bio" %>
+                                        <%= f.text_area :bio, class: "form-control #{form_is_invalid?(@user, :bio)}", placeholder: 'Bio', readonly: readonly %>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">
+                                        UPDATE
+                                    </button>
+                                    <button type="reset" class="btn btn-secondary">
+                                        RESET
+                                    </button>
+                                </div>
+                            <% end %>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-9">
-            <%= render "users/components/setting_view", setting_id: "account", setting_title: t("settings.account.subtitle") %>
         </div>
     </div>
 </div>
