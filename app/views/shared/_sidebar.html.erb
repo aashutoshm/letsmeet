@@ -27,11 +27,15 @@
             <span>Dashboard</span>
         <% end %>
     </li>
-    <li class="nav-item ">
-        <a class="nav-link" href="#">
-            <i class="fa fa-phone"></i>
-            <span>Call History</span></a>
-    </li>
+    <% if current_user.role.get_permission("can_create_rooms") && !current_user.has_role?(:super_admin) && !hide_recording_tables %>
+        <% all_rec_page = params[:controller] == "users" && params[:action] == "recordings" ? "border-right-primary" : "" %>
+        <li class="nav-item <%= all_rec_page %>">
+            <%= link_to get_user_recordings_path(current_user), class: "nav-link" do %>
+                <i class="fa fa-phone"></i>
+                <span>Call History</span>
+            <% end %>
+        </li>
+    <% end %>
     <li class="nav-item ">
         <a class="nav-link" href="#">
             <i class="far fa-calendar-alt"></i>
@@ -42,12 +46,4 @@
             <i class="far fa-address-book"></i>
             <span>Contacts</span></a>
     </li>
-
-
-
-    <!-- Sidebar Toggler (Sidebar) -->
-    <!-- <div class="text-center d-none d-md-inline">
-      <button class="rounded-circle border-0" id="sidebarToggle"></button>
-    </div> -->
-
 </ul>

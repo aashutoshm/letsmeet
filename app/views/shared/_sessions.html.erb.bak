@@ -1,35 +1,27 @@
-<div class="container-fluid">
+<%
+    # BigBlueButton open source conferencing system - http://www.bigbluebutton.org/.
+    # Copyright (c) 2018 BigBlueButton Inc. and by respective authors (see below).
+    # This program is free software; you can redistribute it and/or modify it under the
+    # terms of the GNU Lesser General Public License as published by the Free Software
+    # Foundation; either version 3.0 of the License, or (at your option) any later
+    # version.
+    #
+    # BigBlueButton is distributed in the hope that it will be useful, but WITHOUT ANY
+    # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+    # PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+    # You should have received a copy of the GNU Lesser General Public License along
+    # with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
+%>
 
-    <div class="row">
+<div class="sessions pb-5">
+    <div class="container pt-6">
 
-        <!-- Area Chart -->
-        <div class="col-xl-12 col-lg-12">
-            <!-- Project Card Example -->
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h4 class="m-0 font-weight-bold tcolor"><%= title %></h4>
-                </div>
-                <div class="card-body">
+        <%= render "shared/components/subtitle", subtitle: title, search: true %>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
                     <div class="table-responsive">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-6">
-
-                                </div>
-                                <div class="col-md-6 mb-4">
-                                    <div id="search-bar" class="d-inline-block float-right">
-                                        <div class="input-group">
-                                            <input id="search-input" type="text" class="form-control" placeholder="<%= t("settings.search") %>..." value="<%= @search %>">
-                                            <% unless @search.blank? %>
-                                                <span id="clear-search" class="text-primary" onclick="clearSearch()"><i class="fas fa-times"></i></span>
-                                            <% end %>
-                                            <span class="input-group-append"><button class="btn btn-outline-primary" type="button" onclick="searchPage()"><i class="fas fa-search"></i></button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <table id="recordings-table" class="table table-bordered dash-record">
+                        <table id="recordings-table" class="table table-hover table-outline table-vcenter text-nowrap card-table">
                             <thead>
                             <tr>
                                 <th data-header="name" data-order="<%= @order_column == "name" ? @order_direction : "none" %>">
@@ -129,9 +121,8 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
 
-<%= render "shared/modals/delete_recording_modal" %>
+<%= render "shared/modals/delete_recording_modal" %> 
