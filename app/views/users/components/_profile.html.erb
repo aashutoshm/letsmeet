@@ -1,7 +1,7 @@
 <div class="card profile">
     <div class="desc">
         <% if current_user.image.blank? || !valid_url?(current_user.image) %>
-            <span class="avatar avatar-xxxl bg-primary"><%= current_user.first_name.first %></span>
+            <span class="avatar avatar-xxxl bg-primary"><%= current_user.first_name ? current_user.first_name.first : current_user.name.first %></span>
         <% else %>
             <%= image_tag(current_user.image, class: "avatar avatar-xxl") %>
         <% end %>
