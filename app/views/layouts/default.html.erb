@@ -66,7 +66,7 @@
     </script>
 </head>
 
-<body id="page-top">
+<body id="page-top" data-controller="<%= params[:controller] %>" data-action="<%= params[:action] %>" data-relative-root="<%= Rails.configuration.relative_url_root || "/" %>">
 <div id="wrapper">
     <%= render "shared/sidebar" %>
 
@@ -123,6 +123,7 @@
 
 <!-- Custom scripts -->
 <script src="/js/letsmeet.min.js"></script>
+<script src="/js/delete.js"></script>
 
 
 <!-- Page level plugins -->
