@@ -1,9 +1,15 @@
 class ContactsController < ApplicationController
+    include Pagy::Backend
+
     layout "default"
 
     # GET /:room_id/contacts
     def index
-        @contacts = current_user.main_room.contacts
+        contacts = Contact.where("room_id = :room_id AND (first_name LIKE :keyword OR last_name LIKE :keyword OR email LIKE :keyword)", {
+            :room_id => current_user.main_room.id,
+            :keyword => "%#{params[:keyword]}%"
+        })
+        @pagy, @contacts = pagy_array(contacts, page: params[:page], items: 12)
     end
 
     # GET /:room_id/contacts/new
@@ -27,7 +33,7 @@ class ContactsController < ApplicationController
             custom_field2: params[:contact][:custom_field2],
         )
         if @contact.save
-            redirect_to contacts_path(current_user.main_room), flash: {success: "New contact has been added."}
+            redirect_to contacts_path(current_user.main_room), flash: { success: "New contact has been added." }
         else
             render :new
         end
@@ -42,7 +48,7 @@ class ContactsController < ApplicationController
     def update
         @contact = Contact.find_by(id: params[:id])
         if @contact.update(contact_params)
-            redirect_to contacts_path(current_user.main_room), flash: {success: "Information successfully updated."}
+            redirect_to contacts_path(current_user.main_room), flash: { success: "Information successfully updated." }
         else
             render :edit
         end
