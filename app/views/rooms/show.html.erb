@@ -4,6 +4,7 @@
         <%#= t("add_to_google_calendar") %>
 <!--    </a>-->
 <%# end %>
+<%= render "rooms/components/schedule_meeting" %>
 <div class="container-fluid">
 
     <div class="row">
@@ -23,11 +24,11 @@
                                 <h6 class="mt-2 font-weight-light text-white ">Your calendar stays full and
                                     you stay profuctive</h6>
 
-                                <a href="#" class="btn btn-Secondary bg-white text-black mt-4"><b
+                                <a href="javascript:void(0);" data-toggle="modal" data-target="#schedule_meeting" class="btn btn-Secondary bg-white text-black mt-4"><b
                                     class="meet">SCHEDULE A MEETING</b></a>
                             </div>
                             <div class="col-md-6">
-                                <img src="img/OBJECTS.png" class="float-right" alt="img">
+                                <img src="/img/OBJECTS.png" class="float-right" alt="img">
                             </div>
 
                         </div>
