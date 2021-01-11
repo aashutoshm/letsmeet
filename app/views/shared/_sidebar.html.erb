@@ -41,9 +41,11 @@
             <i class="far fa-calendar-alt"></i>
             <span>Schedule</span></a>
     </li>
-    <li class="nav-item ">
-        <a class="nav-link" href="#">
+    <% all_contact_page = params[:controller] == "contacts" && params[:action] == "index" ? "border-right-primary" : "" %>
+    <li class="nav-item <%= all_contact_page %>">
+        <%= link_to contacts_path(current_user.main_room), class: "nav-link" do %>
             <i class="far fa-address-book"></i>
-            <span>Contacts</span></a>
+            <span>Contacts</span>
+        <% end %>
     </li>
 </ul>
