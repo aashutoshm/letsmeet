@@ -45,9 +45,6 @@
                                                     <i class="far fa-trash-alt"></i>
                                                 </button>
                                             <% end %>
-                                            <%#= button_to delete_contact_path(room_uid: current_user.main_room, id: contact.id), method: :delete, class: "btn btn-link float-right text-danger", "data-target": "#confirmDelete", "data-toggle": "modal", "type": "button" do %>
-                                            <!--                                                <i class="far fa-trash-alt"></i>-->
-                                            <%# end %>
                                             <%= link_to edit_contact_path(current_user.main_room, contact.id), class: 'btn btn-link float-right' do %>
                                                 <i class="fas fa-pencil-alt"></i>
                                             <% end %>
@@ -66,11 +63,15 @@
                                         </div>
                                         <div class="social-icons">
                                             <div class="row">
-                                                <div class="col-md-3" data-toggle="tooltip" data-placement="top" title="<%= contact.phone1 %>">
-                                                    <i class="fas fa-phone-alt"></i>
+                                                <div class="col-md-3">
+                                                    <a href="tel:<%= contact.phone1 %>" data-toggle="tooltip" data-placement="top" title="<%= contact.phone1 %>">
+                                                        <i class="fas fa-phone-alt"></i>
+                                                    </a>
                                                 </div>
-                                                <div class="col-md-3 text-center" data-toggle="tooltip" data-placement="top" title="<%= contact.email %>">
-                                                    <i class="fas fa-envelope"></i>
+                                                <div class="col-md-3 text-center">
+                                                    <a data-toggle="tooltip" data-placement="top" title="<%= contact.email %>" href="mailto:<%= contact.email %>">
+                                                        <i class="fas fa-envelope"></i>
+                                                    </a>
                                                 </div>
                                                 <div class="col-md-3 text-center">
                                                     <i class="fas fa-user"></i>
