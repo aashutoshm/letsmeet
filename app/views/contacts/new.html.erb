@@ -6,7 +6,7 @@
                     Add New Contact
                 </div>
                 <div class="card-body">
-                    <%= form_for @contact, method: :post do |f| %>
+                    <%= form_for @contact, url: new_contact_path, method: :post do |f| %>
                         <div class="form-group">
                             <%= f.label :first_name, "First name" %>
                             <%= f.text_field :first_name, class: "form-control #{form_is_invalid?(@contact, :first_name)}", placeholder: 'First Name', required: true %>
@@ -18,6 +18,9 @@
                         <div class="form-group">
                             <%= f.label :email, "Email Address" %>
                             <%= f.email_field :email, class: "form-control #{form_is_invalid?(@contact, :email)}", placeholder: 'Email', required: true %>
+                            <% if @contact.errors[:email][0] %>
+                                <small class="text-danger">Email <%= @contact.errors[:email][0] %></small>
+                            <% end %>
                         </div>
                         <div class="form-group">
                             <%= f.label :company, "Company" %>
@@ -30,10 +33,16 @@
                         <div class="form-group">
                             <%= f.label :phone1, "Phone 1" %>
                             <%= f.text_field :phone1, class: "form-control #{form_is_invalid?(@contact, :phone1)}", placeholder: 'Phone 1' %>
+                            <% if @contact.errors[:phone1][0] %>
+                                <small class="text-danger">Phone 1 <%= @contact.errors[:phone1][0] %></small>
+                            <% end %>
                         </div>
                         <div class="form-group">
                             <%= f.label :phone2, "Phone 2" %>
                             <%= f.text_field :phone2, class: "form-control #{form_is_invalid?(@contact, :phone2)}", placeholder: 'Phone 2' %>
+                            <% if @contact.errors[:phone2][0] %>
+                                <small class="text-danger">Phone 2 <%= @contact.errors[:phone2][0] %></small>
+                            <% end %>
                         </div>
                         <div class="form-group">
                             <%= f.label :notes, "Notes" %>

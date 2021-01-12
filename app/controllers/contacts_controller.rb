@@ -12,12 +12,12 @@ class ContactsController < ApplicationController
         @pagy, @contacts = pagy_array(contacts, page: params[:page], items: 12)
     end
 
-    # GET /:room_id/contacts/new
+    # GET /:room_id/contacts/create
     def new
         @contact = Contact.new
     end
 
-    # POST /:room_id/contacts
+    # POST /:room_id/contacts/create
     def create
         @contact = Contact.new(
             room_id: current_user.main_room.id,
@@ -44,7 +44,7 @@ class ContactsController < ApplicationController
         @contact = Contact.find_by(id: params[:id])
     end
 
-    # PUT /:room_id/contacts/:id
+    # PUT /:room_id/contacts/:id/edit
     def update
         @contact = Contact.find_by(id: params[:id])
         if @contact.update(contact_params)
@@ -52,6 +52,14 @@ class ContactsController < ApplicationController
         else
             render :edit
         end
+    end
+
+    # DELETE /:room_id/contacts/:id
+    def destroy
+        @contact = Contact.find(params[:id])
+        @contact.destroy
+
+        redirect_to contacts_path(current_user.main_room)
     end
 
     def contact_params

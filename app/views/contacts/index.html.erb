@@ -20,7 +20,7 @@
                 </span>
                                     <input class="form-control py-2 border-left-0 border call-invi" name="keyword"
                                            type="search"
-                                           value="<%=params[:keyword] %>"
+                                           value="<%= params[:keyword] %>"
                                            placeholder="Search - by first name / by last name / or by email">
 
                                 </div>
@@ -40,6 +40,14 @@
                                 <div class="col-md-3">
                                     <div class="card profile mb-3">
                                         <div>
+                                            <%= form_with url: delete_contact_path(room_uid: current_user.main_room, id: contact.id), method: :delete, class: "form-inline float-right" do |form| %>
+                                                <button type="button" class="btn btn-link text-danger" data-target="#confirmDelete" data-toggle="modal">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </button>
+                                            <% end %>
+                                            <%#= button_to delete_contact_path(room_uid: current_user.main_room, id: contact.id), method: :delete, class: "btn btn-link float-right text-danger", "data-target": "#confirmDelete", "data-toggle": "modal", "type": "button" do %>
+                                            <!--                                                <i class="far fa-trash-alt"></i>-->
+                                            <%# end %>
                                             <%= link_to edit_contact_path(current_user.main_room, contact.id), class: 'btn btn-link float-right' do %>
                                                 <i class="fas fa-pencil-alt"></i>
                                             <% end %>
@@ -86,6 +94,29 @@
                 <div class="card-footer">
                     <%= pagy_bootstrap_nav(@pagy).html_safe %>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-danger" id="confirmDelete" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Confirm Delete
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Delete this user?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger" id="confirm">Confirm Delete</button>
             </div>
         </div>
     </div>

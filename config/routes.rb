@@ -135,7 +135,13 @@ Rails.application.routes.draw do
         post '/start', to: 'rooms#start', as: :start_room
         get '/logout', to: 'rooms#logout', as: :logout_room
         post '/login', to: 'rooms#login', as: :login_room
-        resources :contacts
+        get '/contacts', to: 'contacts#index', as: :contacts
+        get '/contacts/create', to: 'contacts#new', as: :new_contact
+        post '/contacts/create', to: 'contacts#create'
+        get '/contacts/:id/edit', to: 'contacts#edit', as: :edit_contact
+        get '/contacts/:id', to: 'contacts#show', as: :contact
+        put '/contacts/:id/edit', to: 'contacts#update', as: :update_contact
+        delete '/contacts/:id', to: 'contacts#destroy', as: :delete_contact
     end
 
     # Recording operations routes
