@@ -27,7 +27,7 @@
                             </form>
                         </div>
                         <div class="col-md-4 text-right">
-                            <%= link_to new_contact_path(current_user.main_room), class: "add-contacts-btn" do %>
+                            <%= link_to new_contact_path, class: "add-contacts-btn" do %>
                                 <i class="fa fa-plus"></i>ADD NEW
                             <% end %>
                         </div>
@@ -37,15 +37,15 @@
                     <div class="row contact-row">
                         <% if @contacts %>
                             <% @contacts.each do |contact| %>
-                                <div class="col-md-3">
+                                <div class="col-xl-3 col-lg-4 col-md-6">
                                     <div class="card profile mb-3">
                                         <div>
-                                            <%= form_with url: delete_contact_path(room_uid: current_user.main_room, id: contact.id), method: :delete, class: "form-inline float-right" do |form| %>
+                                            <%= form_with url: delete_contact_path(id: contact.id), method: :delete, class: "form-inline float-right" do |form| %>
                                                 <button type="button" class="btn btn-link text-danger" data-target="#confirmDelete" data-toggle="modal">
                                                     <i class="far fa-trash-alt"></i>
                                                 </button>
                                             <% end %>
-                                            <%= link_to edit_contact_path(current_user.main_room, contact.id), class: 'btn btn-link float-right' do %>
+                                            <%= link_to edit_contact_path(contact.id), class: 'btn btn-link float-right' do %>
                                                 <i class="fas fa-pencil-alt"></i>
                                             <% end %>
                                         </div>

@@ -60,19 +60,6 @@ body {
     color: #8BABBB;
 }
 
-.bg-primary {
-    background-color: #0072F8 !important;
-}
-
-.text-primary {
-    color: #0072F8 !important;
-}
-
-.btn-primary {
-    background-color: #0072F8;
-    border-color: #0072F8;
-}
-
 .topbar .dropdown-list .dropdown-header {
     background-color: #0072F8;
     border-color: #0072F8;
@@ -666,19 +653,9 @@ h3.mt-10 {
     width: fit-content;
 }
 
-.modal-content {
-    width: 650px;
-}
-
 .meeting-sc {
     border: 1px solid #0072F8;
     padding: 10px;
-}
-
-.modal-dialog {
-    max-width: 576px;
-    margin: 0 auto;
-    margin-top: 0px;
 }
 
 .schmm .form-control {

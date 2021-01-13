@@ -1,7 +1,7 @@
 class CreateContacts < ActiveRecord::Migration[5.2]
     def change
         create_table :contacts do |t|
-            t.belongs_to :room, index: true
+            t.belongs_to :user, index: true
             t.string :first_name
             t.string :last_name
             t.string :company

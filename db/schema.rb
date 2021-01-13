@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_11_094453) do
+ActiveRecord::Schema.define(version: 2021_01_13_020116) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 2021_01_11_094453) do
   end
 
   create_table "contacts", force: :cascade do |t|
-    t.bigint "room_id"
+    t.bigint "user_id"
     t.string "first_name"
     t.string "last_name"
     t.string "company"
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 2021_01_11_094453) do
     t.string "custom_field2"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["room_id"], name: "index_contacts_on_room_id"
+    t.index ["user_id"], name: "index_contacts_on_user_id"
   end
 
   create_table "features", id: :serial, force: :cascade do |t|
@@ -62,6 +62,23 @@ ActiveRecord::Schema.define(version: 2021_01_11_094453) do
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_features_on_name"
     t.index ["setting_id"], name: "index_features_on_setting_id"
+  end
+
+  create_table "guest_permissions", force: :cascade do |t|
+    t.bigint "schedule_id"
+    t.string "name"
+    t.boolean "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["schedule_id"], name: "index_guest_permissions_on_schedule_id"
+  end
+
+  create_table "guests", force: :cascade do |t|
+    t.bigint "schedule_id"
+    t.string "username", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["schedule_id"], name: "index_guests_on_schedule_id"
   end
 
   create_table "invitations", id: :serial, force: :cascade do |t|
@@ -124,6 +141,28 @@ ActiveRecord::Schema.define(version: 2021_01_11_094453) do
     t.index ["sessions"], name: "index_rooms_on_sessions"
     t.index ["uid"], name: "index_rooms_on_uid"
     t.index ["user_id"], name: "index_rooms_on_user_id"
+  end
+
+  create_table "schedules", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "title", null: false
+    t.date "start_date"
+    t.date "end_date"
+    t.time "start_time"
+    t.time "end_time"
+    t.boolean "all_day", default: false
+    t.boolean "repeat_weekly", default: false
+    t.integer "repeat_day"
+    t.boolean "mute_video", default: false
+    t.boolean "mute_audio", default: false
+    t.boolean "record_meeting", default: false
+    t.text "description"
+    t.string "events_tag"
+    t.string "notification_type"
+    t.integer "notification_minutes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_schedules_on_user_id"
   end
 
   create_table "settings", id: :serial, force: :cascade do |t|

@@ -114,6 +114,17 @@ Rails.application.routes.draw do
     # Returns a list of users for the shared access list
     get '/shared_access_list', to: 'users#shared_access_list'
 
+    get '/contacts', to: 'contacts#index', as: :contacts
+    get '/contacts/create', to: 'contacts#new', as: :new_contact
+    post '/contacts/create', to: 'contacts#create'
+    get '/contacts/:id/edit', to: 'contacts#edit', as: :edit_contact
+    get '/contacts/:id', to: 'contacts#show', as: :contact
+    put '/contacts/:id/edit', to: 'contacts#update', as: :update_contact
+    delete '/contacts/:id', to: 'contacts#destroy', as: :delete_contact
+
+    get '/schedules', to: 'schedules#index', as: :schedules
+    post '/schedules/store', to: 'schedules#store', as: :store_schedule
+
     # Room resources.
     resources :rooms, only: [:create, :show, :destroy], param: :room_uid, path: '/'
 
@@ -135,13 +146,6 @@ Rails.application.routes.draw do
         post '/start', to: 'rooms#start', as: :start_room
         get '/logout', to: 'rooms#logout', as: :logout_room
         post '/login', to: 'rooms#login', as: :login_room
-        get '/contacts', to: 'contacts#index', as: :contacts
-        get '/contacts/create', to: 'contacts#new', as: :new_contact
-        post '/contacts/create', to: 'contacts#create'
-        get '/contacts/:id/edit', to: 'contacts#edit', as: :edit_contact
-        get '/contacts/:id', to: 'contacts#show', as: :contact
-        put '/contacts/:id/edit', to: 'contacts#update', as: :update_contact
-        delete '/contacts/:id', to: 'contacts#destroy', as: :delete_contact
     end
 
     # Recording operations routes
