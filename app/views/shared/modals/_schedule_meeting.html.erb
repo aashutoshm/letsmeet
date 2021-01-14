@@ -107,7 +107,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <span v-for="(guest, index) in guests" class="avatar bg-primary mr-2" @click="removeGuest(index)">
+                        <span v-for="(guest, index) in guests" class="avatar bg-primary mr-2" @click="removeGuest(index)" data-toggle="tooltip" data-placement="top" :title="guest">
                             {{ guest[0] }}
                         </span>
                     </div>

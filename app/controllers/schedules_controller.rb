@@ -7,6 +7,55 @@ class SchedulesController < ApplicationController
     def index
     end
 
+    # GET /schedules/ajax
+    def ajax
+        start_datetime = params[:start]
+        end_datetime = params[:end]
+        schedules = Schedule.where('start_date BETWEEN :start_datetime AND :end_datetime OR repeat_weekly = true', {
+            :start_datetime => start_datetime,
+            :end_datetime => end_datetime
+        })
+
+        events = Array.new
+
+        schedules.each do |schedule|
+            if schedule.all_day
+                if schedule.repeat_weekly
+                    events.push({
+                                    "daysOfWeek": [schedule.repeat_day]
+                                })
+                else
+                    events.push({
+                                    "title" => schedule.title,
+                                    "start" => schedule.start_date,
+                                    "end" => schedule.end_date
+                                })
+                end
+            else
+                if schedule.repeat_weekly
+                    events.push({
+                                    "daysOfWeek": [schedule.repeat_day],
+                                    "startTime": schedule.start_time.strftime("%H:%M"),
+                                    "endTime": schedule.end_time.strftime("%H:%M")
+                                })
+                else
+                    a = schedule.start_date
+                    b = schedule.end_date
+                    c = b.mjd - a.mjd
+                    (0..c).each do |i|
+                        events.push({
+                                        "id" => schedule.id,
+                                        "title" => schedule.title,
+                                        "start" => (schedule.start_date + i).strftime("%Y-%m-%d") + "T" + schedule.start_time.strftime("%H:%M") + ":00" + "-" + schedule.end_time.strftime("%H:%M"),
+                                    })
+                    end
+                end
+            end
+        end
+
+        render json: events
+    end
+
     # POST /schedules/store
     def store
         @schedule = Schedule.new(
@@ -30,6 +79,7 @@ class SchedulesController < ApplicationController
         end
 
         if params[:repeat_weekly]
+            @schedule.repeat_weekly = params[:repeat_weekly]
             @schedule.repeat_day = params[:repeat_day]
         else
             @schedule.start_date = params[:start_date]

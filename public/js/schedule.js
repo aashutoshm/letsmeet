@@ -68,3 +68,25 @@ new Vue({
         }
     }
 })
+
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    if (calendarEl) {
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            themeSystem: 'bootstrap',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+            },
+            events: {
+                url: '/schedules/ajax',
+                failure: function() {
+                    console.log('failed')
+                }
+            },
+        });
+        calendar.render();
+    }
+});

@@ -123,6 +123,7 @@ Rails.application.routes.draw do
     delete '/contacts/:id', to: 'contacts#destroy', as: :delete_contact
 
     get '/schedules', to: 'schedules#index', as: :schedules
+    get '/schedules/ajax', to: 'schedules#ajax', as: :ajax_schedules
     post '/schedules/store', to: 'schedules#store', as: :store_schedule
 
     # Room resources.
