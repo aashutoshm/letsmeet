@@ -22,13 +22,16 @@ class SchedulesController < ApplicationController
             if schedule.all_day
                 if schedule.repeat_weekly
                     events.push({
-                                    "daysOfWeek": [schedule.repeat_day]
+                                    "daysOfWeek": [schedule.repeat_day],
+                                    "title": schedule.title,
+                                    "id" => schedule.id,
                                 })
                 else
                     events.push({
                                     "title" => schedule.title,
                                     "start" => schedule.start_date,
-                                    "end" => schedule.end_date
+                                    "end" => schedule.end_date,
+                                    "id" => schedule.id,
                                 })
                 end
             else
@@ -36,7 +39,9 @@ class SchedulesController < ApplicationController
                     events.push({
                                     "daysOfWeek": [schedule.repeat_day],
                                     "startTime": schedule.start_time.strftime("%H:%M"),
-                                    "endTime": schedule.end_time.strftime("%H:%M")
+                                    "endTime": schedule.end_time.strftime("%H:%M"),
+                                    "title": schedule.title,
+                                    "id" => schedule.id,
                                 })
                 else
                     a = schedule.start_date
@@ -56,6 +61,18 @@ class SchedulesController < ApplicationController
         render json: events
     end
 
+    # GET /schedules/upcoming
+    def upcoming
+        start_datetime = DateTime.now
+        end_datetime = start_datetime.next_day(7)
+        schedules = Schedule.where('start_date BETWEEN :start_datetime AND :end_datetime', {
+            :start_datetime => start_datetime,
+            :end_datetime => end_datetime
+        })
+
+        render json: schedules.to_json(:include => [:user, :guests])
+    end
+
     # POST /schedules/store
     def store
         @schedule = Schedule.new(
@@ -63,7 +80,10 @@ class SchedulesController < ApplicationController
             title: params[:title],
             description: params[:description],
             notification_type: params[:notification_type],
-            notification_minutes: params[:notification_minutes]
+            notification_minutes: params[:notification_minutes],
+            mute_video: params[:mute_video],
+            mute_audio: params[:mute_audio],
+            record_meeting: params[:record_meeting]
         )
 
         if params[:event_tags].length > 0
@@ -73,7 +93,10 @@ class SchedulesController < ApplicationController
 
         if params[:all_day]
             @schedule.all_day = params[:all_day]
+            @schedule.start_time = nil
+            @schedule.end_time = nil
         else
+            @schedule.all_day = nil
             @schedule.start_time = params[:start_time]
             @schedule.end_time = params[:end_time]
         end
@@ -81,7 +104,11 @@ class SchedulesController < ApplicationController
         if params[:repeat_weekly]
             @schedule.repeat_weekly = params[:repeat_weekly]
             @schedule.repeat_day = params[:repeat_day]
+            @schedule.start_date = nil
+            @schedule.end_date = nil
         else
+            @schedule.repeat_weekly = nil
+            @schedule.repeat_day = nil
             @schedule.start_date = params[:start_date]
             @schedule.end_date = params[:end_date]
         end
@@ -116,6 +143,94 @@ class SchedulesController < ApplicationController
                 "message": "Error",
                 "schedule": @schedule
             }, status: 400
+        end
+    end
+
+    # GET /schedules/:id
+    def show
+        schedule = current_user.schedules.where("id = ?", params[:id]).first()
+        if schedule
+            render json: schedule.to_json(:include => [:guests, :guest_permissions])
+        else
+            render json: {
+                "message": "Not found"
+            }, schedule: 404
+        end
+    end
+
+    # POST /schedules/:id
+    def update
+        schedule = current_user.schedules.where("id = ?", params[:id]).first()
+        if schedule
+            schedule.title = params[:title]
+            schedule.description = params[:description]
+            schedule.notification_type = params[:notification_type]
+            schedule.notification_minutes = params[:notification_minutes]
+            schedule.mute_video = params[:mute_video]
+            schedule.mute_audio = params[:mute_audio]
+            schedule.record_meeting = params[:record_meeting]
+            if params[:event_tags].length > 0
+                event_tags = params[:event_tags]
+                schedule.events_tag = event_tags.join(",")
+            end
+
+            if params[:all_day]
+                schedule.all_day = params[:all_day]
+                schedule.start_time = nil
+                schedule.end_time = nil
+            else
+                schedule.all_day = nil
+                schedule.start_time = params[:start_time]
+                schedule.end_time = params[:end_time]
+            end
+
+            if params[:repeat_weekly]
+                schedule.repeat_weekly = params[:repeat_weekly]
+                schedule.repeat_day = params[:repeat_day]
+                schedule.start_date = nil
+                schedule.end_date = nil
+            else
+                schedule.repeat_weekly = nil
+                schedule.repeat_day = nil
+                schedule.start_date = params[:start_date]
+                schedule.end_date = params[:end_date]
+            end
+
+            if schedule.save
+                guest_permissions = params[:guest_permissions]
+                guest_permissions.each do |key, value|
+                    # print "Key: ", key, " | Value: ", value, "\n"
+                    permission = GuestPermission.where("schedule_id = ? AND name = ?", schedule.id, key).first()
+                    if permission
+                        permission.value = value
+                        permission.save
+                    else
+                        GuestPermission.create(
+                            schedule_id: schedule.id,
+                            name: key,
+                            value: value
+                        )
+                    end
+                end
+
+                schedule.guests.destroy_all
+
+                if params[:guests].length > 0
+                    guest_names = params[:guests]
+                    guest_names.each do |guest_name|
+                        # print "Key: ", key, " | Value: ", value, "\n"
+                        Guest.create(
+                            schedule_id: schedule.id,
+                            username: guest_name
+                        )
+                    end
+                end
+            end
+            render json: schedule.to_json(:include => [:guests, :guest_permissions])
+        else
+            render json: {
+                "message": "Not found"
+            }, schedule: 404
         end
     end
 

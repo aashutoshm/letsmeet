@@ -6,8 +6,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body" id="schedule-meeting">
-                <%#= form_with(url: store_schedule_path, method: :post, "@submit.prevent": "handleSubmit", local: false) do |form| %>
-                <form method="post" action="<%= store_schedule_path %>" @submit.prevent="handleSubmit">
+                <form method="post" @submit.prevent="handleSubmit" id="schedule-form">
                     <input id="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
                     <div class="form-group">
                         <input type="text" class="form-control" v-model="title" placeholder="Daily design meeting- meeting room no 1">
@@ -35,7 +34,7 @@
                             <input type="checkbox" class="custom-control-input" id="repeat-weekly" v-model="repeat_weekly">
                             <label class="custom-control-label" for="repeat-weekly">Repeat on weekly</label>
                         </div>
-                        <select class="custom-select w-auto" id="week-day" :disabled="!repeat_weekly" v-model="repeat_day">
+                        <select class="custom-select w-auto" id="week-day" :disabled="!repeat_weekly" :required="repeat_weekly" v-model="repeat_day">
                             <option value="0">Sunday</option>
                             <option value="1">Monday</option>
                             <option value="2">Tuesday</option>
@@ -98,7 +97,7 @@
                     <div class="form-group">
                         <label>Add Guest</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" v-model="guest_name" placeholder="Enter guest Email or Name">
+                            <input type="text" class="form-control" v-model="guest_name" placeholder="Enter guest Email or Name" @keydown="addGuest">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button" @click="handleAddGuest">
                                     Add
@@ -137,7 +136,6 @@
                         <button class="btn btn-primary">Schedule</button>
                     </div>
                 </form>
-                <%# end %>
             </div>
         </div>
     </div>

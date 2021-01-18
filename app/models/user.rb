@@ -30,7 +30,7 @@ class User < ApplicationRecord
     has_many :rooms
     has_many :shared_access
     has_many :contacts
-    has_many :meetings
+    has_many :schedules
 
     belongs_to :main_room, class_name: 'Room', foreign_key: :room_id, required: false
 

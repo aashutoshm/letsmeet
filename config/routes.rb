@@ -124,7 +124,10 @@ Rails.application.routes.draw do
 
     get '/schedules', to: 'schedules#index', as: :schedules
     get '/schedules/ajax', to: 'schedules#ajax', as: :ajax_schedules
+    get '/schedules/upcoming', to: 'schedules#upcoming', as: :upcoming_schedules
     post '/schedules/store', to: 'schedules#store', as: :store_schedule
+    get '/schedules/:id', to: 'schedules#show', as: :show_schedule
+    post '/schedules/:id', to: 'schedules#update', as: :update_schedule
 
     # Room resources.
     resources :rooms, only: [:create, :show, :destroy], param: :room_uid, path: '/'

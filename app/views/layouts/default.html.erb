@@ -54,6 +54,7 @@
     <%= favicon_link_tag asset_path('favicon.ico') %>
 
     <link rel="stylesheet" href="/vendor/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/tavo-calendar/tavo-calendar.css">
     <link rel="stylesheet" href="/css/letsmeet.min.css">
     <link rel="stylesheet" href="/fullcalendar/main.min.css">
     <link rel="stylesheet" href="/css/style.css">
@@ -80,13 +81,13 @@
             <%= yield %>
         </div>
 
-<!--        <footer class="sticky-footer bg-white">-->
-<!--            <div class="container my-auto">-->
-<!--                <div class="copyright text-center my-auto">-->
-<!--                    <span>Copyright &copy; LetsMeet 2020</span>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </footer>-->
+        <!--        <footer class="sticky-footer bg-white">-->
+        <!--            <div class="container my-auto">-->
+        <!--                <div class="copyright text-center my-auto">-->
+        <!--                    <span>Copyright &copy; LetsMeet 2020</span>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </footer>-->
     </div>
 </div>
 
@@ -117,11 +118,13 @@
 </div>
 
 <script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/tavo-calendar/moment.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
 <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 <script src="/fullcalendar/main.min.js"></script>
+<script src="/tavo-calendar/tavo-calendar.js"></script>
 <!-- Custom scripts -->
 <script src="/js/letsmeet.min.js"></script>
 <script src="/js/vue.js"></script>
