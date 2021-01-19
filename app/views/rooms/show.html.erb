@@ -321,257 +321,44 @@
         <!-- Pie Chart -->
         <div class="col-xl-3 col-lg-3 upcoming-events">
             <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h4 class="m-0 font-weight-bold e33">Upcoming Meetings</h4>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <h5 class="text-black font-weight-bold"><b class="b66">Company Policy Discussion</b>
-                    </h5>
-                    <h6>28th May 2020, Saturday</h6>
-                    <h6>03:30pm to 04:00pm</h6>
-                    <div class="image-stack">
-                        <div class="image-stack__item image-stack__item--top">
-                            <img src="img/prof3.png" alt="">
-                        </div>
-                        <div class="image-stack__item image-stack__item--middle">
-                            <img src="img/prof1.png" alt="">
-                        </div>
-                        <div class="image-stack__item image-stack__item--bottom">
-                            <img src="img/prof2.png" alt="">
-                        </div>
-                        <div class="image-stack__item image-stack__item--bottom counter">+3 more</div>
+                <div id="upcoming-events">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between sche-p">
+                        <h5 class="m-0 font-weight-bold e33 pd-t20">Upcoming Meetings</h5>
                     </div>
-                    <!-- <h5 class="text-black font-weight-bold">Organised By</h5> -->
-                    <div class="container-fluid p-0">
-                        <div class="row">
-                            <div class="col-md-12 pt-2 pb-2">
-                                <h5 class="new-color">Organized by</h5>
-
-                            </div>
-
-                            <div class="col-md-2">
-                                <img src="img/bot.png" alt="" class="float-left">
-                            </div>
-                            <div class="col-md-10">
-                                <h6 class="mb-0"><b>John Wrick</b></h6>
-                                <small class="new-color">john@gmail.com</small>
-                            </div>
-                            <div class="input-group inde">
-                                <select class="home-p">
-                                    <option>Cancel</option>
-                                    <option>Send Regret</option>
-                                    <option>Reschedule</option>
-                                </select>
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary meetb inb" type="button">
-                                        <i class="fas fa-arrow-right"></i>
-                                    </button>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item" v-for="(schedule, index) in schedules">
+                                <h5 class="text-black font-weight-bold">
+                                    <b class="b66">{{ schedule.title }}</b>
+                                    <template v-if="schedule.events_tag">
+                                        <span class="badge" :class="{'badge-danger': tag == 'important', 'badge-primary': tag == 'normal', 'badge-secondary': tag == 'general'}" v-for="tag in getEventTags(schedule.events_tag)">{{ tag }}</span>
+                                    </template>
+                                </h5>
+                                <h6>{{ getFullDate(schedule.start_date) }}</h6>
+                                <h6 v-if="schedule.all_day">All day</h6>
+                                <h6 v-else>{{schedule.start_time}} to {{ schedule.end_time }}</h6>
+                                <div>
+                                    <span class="avatar" v-for="guest in schedule.guests">{{guest.username[0]}}</span>
                                 </div>
-                            </div>
-                        </div>
+                                <div class="container-fluid p-0">
+                                    <div class="row">
+                                        <div class="col-md-12 pt-2 pb-2">
+                                            <h5 class="new-color">Organized by</h5>
+                                        </div>
 
-                    </div>
-
-                    <hr class="sidebar-divider">
-
-                    <h5 class="text-black font-weight-bold"><b>Developer Meeting</b> <sup
-                        class="text-danger">Important</sup></h5>
-                    <h6>28th May 2020, Saturday</h6>
-                    <h6>03:30pm to 04:00pm</h6>
-                    <div class="image-stack">
-                        <div class="image-stack__item image-stack__item--top">
-                            <img src="img/prof3.png" alt="">
-                        </div>
-                        <div class="image-stack__item image-stack__item--middle">
-                            <img src="img/prof1.png" alt="">
-                        </div>
-                        <div class="image-stack__item image-stack__item--bottom">
-                            <img src="img/prof2.png" alt="">
-                        </div>
-                        <div class="image-stack__item image-stack__item--bottom counter">+3 more</div>
-                    </div>
-
-                    <div class="container-fluid p-0">
-                        <div class="row">
-                            <div class="col-md-12 pt-2 pb-2">
-                                <h5 class="new-color">Organized by</h5>
-
-                            </div>
-                            <div class="col-md-2">
-                                <img src="img/bot.png" alt="" class="float-left">
-                            </div>
-
-                            <div class="col-md-10">
-                                <h6 class="mb-0"><b>John Wrick</b></h6>
-                                <small class="new-color">john@gmail.com</small>
-                            </div>
-                            <div class="input-group inde">
-                                <select class="home-p">
-                                    <option>Cancel</option>
-                                    <option>Send Regret</option>
-                                    <option>Reschedule</option>
-                                </select>
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary meetb inb" type="button">
-                                        <i class="fas fa-arrow-right"></i>
-                                    </button>
+                                        <div class="col-md-2">
+                                            <img src="/img/bot.png" alt="" class="float-left" v-if="schedule.user.image">
+                                            <span class="avatar bg-primary" v-else>{{schedule.user.name[0]}}</span>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <h6 class="mb-0"><b>{{getFullName(schedule.user)}}</b></h6>
+                                            <small class="new-color">{{schedule.user.email}}</small>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            </li>
+                        </ul>
                     </div>
-
-                    <hr class="sidebar-divider">
-
-                    <h5 class="text-black font-weight-bold"><b>Developer Meeting</b> <sup
-                        class="text-danger">Important</sup></h5>
-                    <h6>28th May 2020, Saturday</h6>
-                    <h6>03:30pm to 04:00pm</h6>
-                    <div class="image-stack">
-                        <div class="image-stack__item image-stack__item--top">
-                            <img src="img/prof3.png" alt="">
-                        </div>
-                        <div class="image-stack__item image-stack__item--middle">
-                            <img src="img/prof1.png" alt="">
-                        </div>
-                        <div class="image-stack__item image-stack__item--bottom">
-                            <img src="img/prof2.png" alt="">
-                        </div>
-                        <div class="image-stack__item image-stack__item--bottom counter">+3 more</div>
-                    </div>
-
-
-                    <div class="container-fluid p-0">
-                        <div class="row">
-                            <div class="col-md-12 pt-2 pb-2">
-                                <h5 class="new-color">Organized by</h5>
-
-                            </div>
-                            <div class="col-md-2">
-                                <img src="img/bot.png" alt="" class="float-left">
-                            </div>
-
-                            <div class="col-md-10">
-                                <h6 class="mb-0"><b>John Wrick</b></h6>
-                                <small class="new-color">john@gmail.com</small>
-                            </div>
-                            <div class="input-group inde">
-                                <select class="home-p">
-                                    <option>Cancel</option>
-                                    <option>Send Regret</option>
-                                    <option>Reschedule</option>
-                                </select>
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary meetb inb" type="button">
-                                        <i class="fas fa-arrow-right"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <hr class="sidebar-divider">
-
-                    <h5 class="text-black font-weight-bold"><b>Testers Meeting</b> <sup class="text-danger">Important</sup>
-                    </h5>
-                    <h6>28th May 2020, Saturday</h6>
-                    <h6>03:30pm to 04:00pm</h6>
-                    <div class="image-stack">
-                        <div class="image-stack__item image-stack__item--top">
-                            <img src="img/prof3.png" alt="">
-                        </div>
-                        <div class="image-stack__item image-stack__item--middle">
-                            <img src="img/prof1.png" alt="">
-                        </div>
-                        <div class="image-stack__item image-stack__item--bottom">
-                            <img src="img/prof2.png" alt="">
-                        </div>
-                        <div class="image-stack__item image-stack__item--bottom counter">+3 more</div>
-                    </div>
-
-
-                    <div class="container-fluid p-0">
-                        <div class="row">
-                            <div class="col-md-12 pt-2 pb-2">
-                                <h5 class="new-color">Organized by</h5>
-
-                            </div>
-                            <div class="col-md-2">
-                                <img src="img/bot.png" alt="" class="float-left">
-                            </div>
-
-                            <div class="col-md-10">
-                                <h6 class="mb-0"><b>John Wrick</b></h6>
-                                <small class="new-color">john@gmail.com</small>
-                            </div>
-                            <div class="input-group inde">
-                                <select class="home-p">
-                                    <option>Cancel</option>
-                                    <option>Send Regret</option>
-                                    <option>Reschedule</option>
-                                </select>
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary meetb inb" type="button">
-                                        <i class="fas fa-arrow-right"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <hr class="sidebar-divider">
-
-                    <h5 class="text-black font-weight-bold"><b>Designer Meeting</b> <sup
-                        class="text-danger">Important</sup></h5>
-                    <h6>28th May 2020, Saturday</h6>
-                    <h6>03:30pm to 04:00pm</h6>
-                    <div class="image-stack">
-                        <div class="image-stack__item image-stack__item--top">
-                            <img src="img/prof3.png" alt="">
-                        </div>
-                        <div class="image-stack__item image-stack__item--middle">
-                            <img src="img/prof1.png" alt="">
-                        </div>
-                        <div class="image-stack__item image-stack__item--bottom">
-                            <img src="img/prof2.png" alt="">
-                        </div>
-                        <div class="image-stack__item image-stack__item--bottom counter">+3 more</div>
-                    </div>
-
-
-                    <div class="container-fluid p-0">
-                        <div class="row">
-                            <div class="col-md-12 pt-2 pb-2">
-                                <h5 class="new-color">Organized by</h5>
-
-                            </div>
-                            <div class="col-md-2">
-                                <img src="img/bot.png" alt="" class="float-left">
-                            </div>
-
-                            <div class="col-md-10">
-                                <h6 class="mb-0"><b>John Wrick</b></h6>
-                                <small class="new-color">john@gmail.com</small>
-                            </div>
-                            <div class="input-group inde">
-                                <select class="home-p">
-                                    <option>Cancel</option>
-                                    <option>Send Regret</option>
-                                    <option>Reschedule</option>
-                                </select>
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary meetb inb" type="button">
-                                        <i class="fas fa-arrow-right"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
                 </div>
             </div>
         </div>
