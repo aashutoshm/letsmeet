@@ -85,6 +85,12 @@ new Vue({
             this.start_date = selectedDateString
             this.repeat_day = selectedDate.getDay();
         })
+
+        eventBus.$on('FULL_CALENDAR_CLICKED', (date) => {
+            this.start_date = this.getOnlyDate(date)
+            this.start_time = this.getOnlyTime(date)
+            this.repeat_day = date.getDay();
+        })
     },
     methods: {
         handleSubmit() {
@@ -169,6 +175,29 @@ new Vue({
         },
         removeGuest(index) {
             this.guests.splice(index, 1)
+        },
+        getOnlyDate(date) {
+            var month = '' + (date.getMonth() + 1),
+                day = '' + date.getDate(),
+                year = date.getFullYear();
+
+            if (month.length < 2)
+                month = '0' + month;
+            if (day.length < 2)
+                day = '0' + day;
+
+            return [year, month, day].join('-');
+        },
+        getOnlyTime(date) {
+            var hours = '' + date.getHours(),
+                minutes = '' + date.getMinutes();
+
+            if (hours.length < 2)
+                hours = '0' + hours;
+            if (minutes.length < 2)
+                minutes = '0' + minutes;
+
+            return [hours, minutes].join(':');
         }
     }
 })
@@ -213,7 +242,7 @@ if (calendar_el) {
     })
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var calendarEl = document.getElementById('calendar');
     if (calendarEl) {
         var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -226,12 +255,16 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             events: {
                 url: '/schedules/ajax',
-                failure: function() {
+                failure: function () {
                     console.log('failed')
                 }
             },
-            eventClick: function(info) {
+            eventClick: function (info) {
                 eventBus.$emit('SCHEDULE_CLICKED', info.event)
+            },
+            dateClick: function (info) {
+                eventBus.$emit('FULL_CALENDAR_CLICKED', info.date)
+                $('#schedule-meeting-modal').modal('show');
             }
         });
         calendar.render();
