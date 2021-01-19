@@ -1,5 +1,3 @@
-const tinyCalendar = new TavoCalendar('#tiny-calendar');
-
 var eventBus = new Vue();
 
 new Vue({
@@ -80,6 +78,12 @@ new Vue({
 
                     $('#schedule-meeting-modal').modal('show');
                 }).catch(error => console.error(error))
+        })
+
+        eventBus.$on('CALENDAR_CLICKED', (selectedDateString) => {
+            var selectedDate = new Date(selectedDateString)
+            this.start_date = selectedDateString
+            this.repeat_day = selectedDate.getDay();
         })
     },
     methods: {
@@ -198,6 +202,16 @@ new Vue({
         }
     }
 })
+
+var calendar_el = document.getElementById('tiny-calendar')
+
+if (calendar_el) {
+    const tinyCalendar = new TavoCalendar(calendar_el);
+    calendar_el.addEventListener('calendar-select', (e) => {
+        eventBus.$emit('CALENDAR_CLICKED', tinyCalendar.getSelected())
+        $('#schedule-meeting-modal').modal('show');
+    })
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
