@@ -171,5 +171,7 @@ module Greenlight
 
         # Default admin password
         config.admin_password_default = ENV['ADMIN_PASSWORD'] || 'administrator'
+
+        config.active_job.queue_adapter = :sidekiq
     end
 end

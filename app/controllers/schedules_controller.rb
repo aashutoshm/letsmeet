@@ -234,6 +234,12 @@ class SchedulesController < ApplicationController
         end
     end
 
+    # POST /schedules/test
+    def test
+        UserMailer.welcome_email(current_user).deliver_later(wait_until: Time.zone.parse('2021-01-25 10:43'))
+        redirect_to root_path
+    end
+
     private
 
     def verify_authenticated
