@@ -11,9 +11,10 @@ class SchedulesController < ApplicationController
     def ajax
         start_datetime = params[:start]
         end_datetime = params[:end]
-        schedules = Schedule.where('start_date BETWEEN :start_datetime AND :end_datetime OR repeat_weekly = true', {
+        schedules = Schedule.where('start_date BETWEEN :start_datetime AND :end_datetime OR repeat_weekly = true AND user_id = :user_id', {
             :start_datetime => start_datetime,
-            :end_datetime => end_datetime
+            :end_datetime => end_datetime,
+            :user_id => current_user.id
         })
 
         events = Array.new
@@ -65,9 +66,10 @@ class SchedulesController < ApplicationController
     def upcoming
         start_datetime = DateTime.now
         end_datetime = start_datetime.next_day(7)
-        schedules = Schedule.where('start_date BETWEEN :start_datetime AND :end_datetime', {
+        schedules = Schedule.where('start_date BETWEEN :start_datetime AND :end_datetime AND user_id = :user_id', {
             :start_datetime => start_datetime,
-            :end_datetime => end_datetime
+            :end_datetime => end_datetime,
+            :user_id => current_user.id
         })
 
         render json: schedules.to_json(:include => [:user, :guests])
