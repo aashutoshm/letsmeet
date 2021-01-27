@@ -152,10 +152,10 @@ class SchedulesController < ApplicationController
                 end
             end
 
-            if schedule.notification_type == "Email"
-                ScheduleMailer.with(schedule: @schedule).invite_email.deliver_now
-            elsif schedule.notification_type == "SMS"
-                NotifySMSJob.set(wait_until: 1.minutes.from_now).perform_now
+            if @schedule.notification_type == "Email"
+                ScheduleMailer.with(schedule: @schedule).invite_email.deliver_later
+            elsif @schedule.notification_type == "SMS"
+                NotifySMSJob.perform_later(@schedule.user.phone, @schedule.get_sms_content)
             end
 
             render json: {
@@ -252,9 +252,9 @@ class SchedulesController < ApplicationController
                 end
 
                 if schedule.notification_type == "Email"
-                    ScheduleMailer.with(schedule: schedule).invite_email.deliver_now
+                    ScheduleMailer.with(schedule: schedule).invite_email.deliver_later
                 elsif schedule.notification_type == "SMS"
-                    NotifySMSJob.set(wait_until: 1.minutes.from_now).perform_now
+                    NotifySMSJob.perform_later(schedule.user.phone, schedule.get_sms_content)
                 end
 
             end
