@@ -26,6 +26,11 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <select class="custom-select w-auto" v-model="selected_tz_name">
+                            <option v-for="timezone in timezones" :value="timezone.value">{{ timezone.name }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" class="custom-control-input" id="all-day" v-model="all_day">
                             <label class="custom-control-label" for="all-day">All day</label>

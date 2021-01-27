@@ -75,15 +75,33 @@ class SchedulesController < ApplicationController
 
     # POST /schedules/store
     def store
+        if room_limit_exceeded
+            render json: {
+                "message": I18n.t("room.room_limit"),
+            }, status: 400
+        end
+
+        room = Room.new(name: params[:title])
+        room.owner = current_user
+        unless room.save
+            render json: {
+                "message": I18n.t("room.create_room_error"),
+            }, status: 400
+        end
+
+        logger.info "Support: #{current_user.email} has created a new room #{room.uid}."
+
         @schedule = Schedule.new(
             user_id: current_user.id,
+            room_id: room.id,
             title: params[:title],
             description: params[:description],
             notification_type: params[:notification_type],
             notification_minutes: params[:notification_minutes],
             mute_video: params[:mute_video],
             mute_audio: params[:mute_audio],
-            record_meeting: params[:record_meeting]
+            record_meeting: params[:record_meeting],
+            timezone: params[:timezone]
         )
 
         if params[:event_tags].length > 0
@@ -134,6 +152,12 @@ class SchedulesController < ApplicationController
                 end
             end
 
+            if schedule.notification_type == "Email"
+                ScheduleMailer.with(schedule: @schedule).invite_email.deliver_now
+            elsif schedule.notification_type == "SMS"
+                NotifySMSJob.set(wait_until: 1.minutes.from_now).perform_now
+            end
+
             render json: {
                 "message": "Success",
                 "schedule": @schedule
@@ -169,6 +193,7 @@ class SchedulesController < ApplicationController
             schedule.mute_video = params[:mute_video]
             schedule.mute_audio = params[:mute_audio]
             schedule.record_meeting = params[:record_meeting]
+            schedule.timezone = params[:timezone]
             if params[:event_tags].length > 0
                 event_tags = params[:event_tags]
                 schedule.events_tag = event_tags.join(",")
@@ -225,6 +250,13 @@ class SchedulesController < ApplicationController
                         )
                     end
                 end
+
+                if schedule.notification_type == "Email"
+                    ScheduleMailer.with(schedule: schedule).invite_email.deliver_now
+                elsif schedule.notification_type == "SMS"
+                    NotifySMSJob.set(wait_until: 1.minutes.from_now).perform_now
+                end
+
             end
             render json: schedule.to_json(:include => [:guests, :guest_permissions])
         else
@@ -234,15 +266,19 @@ class SchedulesController < ApplicationController
         end
     end
 
-    # POST /schedules/test
-    def test
-        UserMailer.welcome_email(current_user).deliver_later(wait_until: Time.zone.parse('2021-01-25 10:43'))
-        redirect_to root_path
-    end
-
     private
 
     def verify_authenticated
         redirect_to root_path unless current_user
+    end
+
+    def room_limit_exceeded
+        limit = @settings.get_value("Room Limit").to_i
+
+        # Does not apply to admin or users that aren't signed in
+        # 15+ option is used as unlimited
+        return false if current_user&.has_role?(:admin) || limit == 15
+
+        current_user.rooms.length >= limit
     end
 end

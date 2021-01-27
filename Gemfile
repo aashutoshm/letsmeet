@@ -142,3 +142,5 @@ gem 'i18n-language-mapping', '~> 0.1.1'
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 
 gem 'sidekiq'
+
+gem 'icalendar'

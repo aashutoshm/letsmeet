@@ -214,6 +214,7 @@ class ApplicationController < ActionController::Base
 
     # Returns the page that the logo redirects to when clicked on
     def home_page
+        return cant_create_rooms_path unless current_user
         return admins_path if current_user.has_role? :super_admin
         return current_user.main_room if current_user.role.get_permission("can_create_rooms")
         cant_create_rooms_path

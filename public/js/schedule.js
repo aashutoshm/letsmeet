@@ -1,3 +1,49 @@
+// Gets the localized string
+function getLocalizedString(key) {
+    var keyArr = key.split(".")
+    var translated = I18n
+
+    // Search current language for the key
+    try {
+        keyArr.forEach(function (k) {
+            translated = translated[k]
+        })
+    } catch (e) {
+        // Key is missing in selected language so default to english
+        translated = undefined;
+    }
+
+
+    // If key is not found, search the fallback language for the key
+    if (translated === null || translated === undefined) {
+        translated = I18nFallback
+
+        keyArr.forEach(function (k) {
+            translated = translated[k]
+        })
+    }
+
+    return translated
+}
+
+function generateAccessCode() {
+    const accessCodeLength = 6
+    var validCharacters = "0123456789"
+    var accessCode = ""
+
+    for (var i = 0; i < accessCodeLength; i++) {
+        accessCode += validCharacters.charAt(Math.floor(Math.random() * validCharacters.length));
+    }
+
+    $("#create-room-access-code").text(getLocalizedString("modal.create_room.access_code") + ": " + accessCode)
+    $("#room_access_code").val(accessCode)
+}
+
+function ResetAccessCode() {
+    $("#create-room-access-code").text(getLocalizedString("modal.create_room.access_code_placeholder"))
+    $("#room_access_code").val(null)
+}
+
 var eventBus = new Vue();
 
 new Vue({
@@ -25,9 +71,11 @@ new Vue({
         everyone_as_admin: false,
         modify_meeting: false,
         invite_others: false,
-        see_guest_list: false
+        see_guest_list: false,
+        timezones: [],
+        selected_tz_name: 'Asia/Calcutta'
     },
-    mounted() {
+    mounted: function () {
         eventBus.$on('SCHEDULE_CLICKED', (event) => {
             this.id = event.id
             axios.get(`/schedules/${this.id}`)
@@ -52,6 +100,7 @@ new Vue({
                     })
                     this.notification_type = data.notification_type
                     this.notification_minutes = data.notification_minutes
+                    this.selected_tz_name = data.timezone
                     this.guests = []
                     data.guests.forEach(g => {
                         this.guests.push(g.username)
@@ -91,8 +140,21 @@ new Vue({
             this.start_time = this.getOnlyTime(date)
             this.repeat_day = date.getDay();
         })
+
+        const getTimezoneList = moment.tz.names().map(t => {
+            return {
+                name: `(GMT${moment.tz(t).format('Z')}) ${t}`,
+                value: t
+            }
+        });
+        this.timezones = getTimezoneList.sort(this.sortByZone)
     },
     methods: {
+        sortByZone(a, b) {
+            let [ahh, amm] = a.name.split("GMT")[1].split(")")[0].split(":");
+            let [bhh, bmm] = b.name.split("GMT")[1].split(")")[0].split(":");
+            return (+ahh * 60 + amm) - (+bhh * 60 + bmm)
+        },
         handleSubmit() {
             let authenticity_token = $('#authenticity_token').val();
 
@@ -120,7 +182,8 @@ new Vue({
                         modify_meeting: this.modify_meeting,
                         invite_others: this.invite_others,
                         see_guest_list: this.see_guest_list
-                    }
+                    },
+                    timezone: this.selected_tz_name,
                 })
                     .then(res => {
                         window.location.reload();
@@ -150,7 +213,8 @@ new Vue({
                         modify_meeting: this.modify_meeting,
                         invite_others: this.invite_others,
                         see_guest_list: this.see_guest_list
-                    }
+                    },
+                    timezone: this.selected_tz_name,
                 })
                     .then(res => {
                         window.location.reload();

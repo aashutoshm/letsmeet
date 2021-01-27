@@ -31,6 +31,7 @@ class Room < ApplicationRecord
   has_many :shared_access
 
   has_one_attached :presentation
+  has_one :schedule
 
   class << self
     include Queries
@@ -78,6 +79,10 @@ class Room < ApplicationRecord
   # Determines the invite path for the room.
   def invite_path
     "#{Rails.configuration.relative_url_root}/#{CGI.escape(uid)}"
+  end
+
+  def invite_url
+    ENV["APP_URL"] + invite_path
   end
 
   # Notify waiting users that a meeting has started.

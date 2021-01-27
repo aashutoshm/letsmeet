@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_13_020116) do
+ActiveRecord::Schema.define(version: 2021_01_26_181357) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -162,6 +162,10 @@ ActiveRecord::Schema.define(version: 2021_01_13_020116) do
     t.integer "notification_minutes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "timezone"
+    t.string "job_id"
+    t.bigint "room_id"
+    t.index ["room_id"], name: "index_schedules_on_room_id", unique: true
     t.index ["user_id"], name: "index_schedules_on_user_id"
   end
 
@@ -230,6 +234,7 @@ ActiveRecord::Schema.define(version: 2021_01_13_020116) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "role_permissions", "roles"
+  add_foreign_key "schedules", "rooms", on_delete: :nullify
   add_foreign_key "shared_accesses", "rooms"
   add_foreign_key "shared_accesses", "users"
 end

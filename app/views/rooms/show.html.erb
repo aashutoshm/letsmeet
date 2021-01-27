@@ -1,3 +1,9 @@
+<% exceeds_limit = current_room_exceeds_limit(@room) %>
+<% if exceeds_limit %>
+    <div class="alert alert-danger alert-dismissible text-center mb-0">
+        <%= t("room.room_limit_exceeded", difference: @diff) %>
+    </div>
+<% end %>
 <div class="container-fluid">
 
     <div class="row">
@@ -17,8 +23,9 @@
                                 <h6 class="mt-2 font-weight-light text-white ">Your calendar stays full and
                                     you stay profuctive</h6>
 
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#schedule-meeting-modal" class="btn btn-Secondary bg-white text-black mt-4"><b
+                                <a href="javascript:void(0);" data-toggle="modal" data-target="#schedule-meeting-modal" class="btn bg-white text-black mt-4"><b
                                     class="meet">SCHEDULE A MEETING</b></a>
+<!--                                <a href="javascript:void(0);" class="btn btn-light mt-4" data-toggle="modal" data-target="#createRoomModal">Create Room</a>-->
                             </div>
                             <div class="col-md-6">
                                 <img src="/img/OBJECTS.png" class="float-right" alt="img">
@@ -366,3 +373,5 @@
 </div>
 
 <%= render "shared/modals/schedule_meeting" %>
+
+<%#= render "shared/modals/create_room_modal" %>
