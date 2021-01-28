@@ -17,3 +17,32 @@
         </div>
     </div>
 </div>
+
+<% content_for :modals do %>
+    <%= render "shared/modals/delete_account_modal", delete_location: delete_user_path %>
+<% end %>
+
+<% content_for :scripts do %>
+    <script>
+        $(".delete-user").click(function (data) {
+            document.getElementById("delete-checkbox").checked = false
+            $("#delete-confirm").prop("disabled", "disabled")
+
+            if ($(data.target).data("delete") == "temp-delete") {
+                $("#perm-delete").hide()
+                $("#delete-warning").show()
+            } else {
+                $("#perm-delete").show()
+                $("#delete-warning").hide()
+            }
+        })
+
+        $("#delete-checkbox").click(function (data) {
+            if (document.getElementById("delete-checkbox").checked) {
+                $("#delete-confirm").removeAttr("disabled")
+            } else {
+                $("#delete-confirm").prop("disabled", "disabled")
+            }
+        })
+    </script>
+<% end %>
