@@ -825,3 +825,14 @@ Icon input
     left: auto;
     right: 0;
 }
+
+#clear-search {
+    z-index: 9;
+    position: absolute;
+    right: 55px;
+    top: 8px;
+}
+
+#clear-search:hover {
+    cursor: pointer;
+}

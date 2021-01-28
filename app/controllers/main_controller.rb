@@ -1,5 +1,7 @@
 class MainController < ApplicationController
     include Registrar
+    include Recorder
+    include Pagy::Backend
 
     before_action :verify_authenticated
 
@@ -26,6 +28,9 @@ class MainController < ApplicationController
             :beginning_of_year => Date.today.beginning_of_year,
             :end_of_year => Date.today.end_of_year
         }).count
+
+        @search, @order_column, @order_direction, recs = all_recordings(current_user.rooms.pluck(:bbb_id), params.permit(:search, :column, :direction), true)
+        @pagy, @recordings = pagy_array(recs)
 
         # redirect_to home_page if current_user
     end
