@@ -85,6 +85,10 @@ class SchedulesController < ApplicationController
 
         room = Room.new(name: params[:title])
         room.owner = current_user
+        room.room_settings = create_room_settings_string(
+            {
+                "recording": params[:record_meeting]
+            })
         unless room.save
             render json: {
                 "message": I18n.t("room.create_room_error"),
@@ -188,6 +192,17 @@ class SchedulesController < ApplicationController
     def update
         schedule = current_user.schedules.where("id = ?", params[:id]).first()
         if schedule
+            room = schedule.room
+            room.room_settings = create_room_settings_string(
+                {
+                    "recording": params[:record_meeting]
+                })
+            unless room.save
+                render json: {
+                    "message": "Room params invalid"
+                }, schedule: 400
+            end
+
             schedule.title = params[:title]
             schedule.description = params[:description]
             schedule.notification_type = params[:notification_type]
@@ -282,5 +297,17 @@ class SchedulesController < ApplicationController
         return false if current_user&.has_role?(:admin) || limit == 15
 
         current_user.rooms.length >= limit
+    end
+
+    def create_room_settings_string(options)
+        room_settings = {
+            # "muteOnStart": options[:mute_on_join] == "1",
+            # "requireModeratorApproval": options[:require_moderator_approval] == "1",
+            # "anyoneCanStart": options[:anyone_can_start] == "1",
+            # "joinModerator": options[:all_join_moderator] == "1",
+            "recording": options[:recording],
+        }
+
+        room_settings.to_json
     end
 end

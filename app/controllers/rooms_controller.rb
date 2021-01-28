@@ -432,27 +432,28 @@ class RoomsController < ApplicationController
 
     # Gets the room setting based on the option set in the room configuration
     def room_setting_with_config(name)
-        config = case name
-                 when "muteOnStart"
-                     "Room Configuration Mute On Join"
-                 when "requireModeratorApproval"
-                     "Room Configuration Require Moderator"
-                 when "joinModerator"
-                     "Room Configuration All Join Moderator"
-                 when "anyoneCanStart"
-                     "Room Configuration Allow Any Start"
-                 when "recording"
-                     "Room Configuration Recording"
-                 end
-
-        case @settings.get_value(config)
-        when "enabled"
-            true
-        when "optional"
-            @room_settings[name]
-        when "disabled"
-            false
-        end
+        # config = case name
+        #          when "muteOnStart"
+        #              "Room Configuration Mute On Join"
+        #          when "requireModeratorApproval"
+        #              "Room Configuration Require Moderator"
+        #          when "joinModerator"
+        #              "Room Configuration All Join Moderator"
+        #          when "anyoneCanStart"
+        #              "Room Configuration Allow Any Start"
+        #          when "recording"
+        #              "Room Configuration Recording"
+        #          end
+        #
+        # case @settings.get_value(config)
+        # when "enabled"
+        #     true
+        # when "optional"
+        #     @room_settings[name]
+        # when "disabled"
+        #     false
+        # end
+        @room_settings[name]
     end
 
     helper_method :room_setting_with_config
