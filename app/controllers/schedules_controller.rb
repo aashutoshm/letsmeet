@@ -176,7 +176,7 @@ class SchedulesController < ApplicationController
     def show
         schedule = current_user.schedules.where("id = ?", params[:id]).first()
         if schedule
-            render json: schedule.to_json(:include => [:guests, :guest_permissions])
+            render json: schedule.to_json(:include => [:guests, :guest_permissions, :room])
         else
             render json: {
                 "message": "Not found"

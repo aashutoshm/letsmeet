@@ -17,15 +17,16 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-6">
-                                <h5 class="m-0 font-weight-bold text-white">Welcome back John!</h5>
+                                <h5 class="m-0 font-weight-bold text-white">Welcome
+                                    back <%= current_user.first_name %> <%= current_user.last_name %>!</h5>
                                 <h6 class="mt-2 mb-0 font-weight-light text-white">Book meetings with your
                                     friends,colleagues and clients.</h6>
                                 <h6 class="mt-2 font-weight-light text-white ">Your calendar stays full and
-                                    you stay profuctive</h6>
+                                    you stay productive</h6>
 
                                 <a href="javascript:void(0);" data-toggle="modal" data-target="#schedule-meeting-modal" class="btn bg-white text-black mt-4"><b
                                     class="meet">SCHEDULE A MEETING</b></a>
-<!--                                <a href="javascript:void(0);" class="btn btn-light mt-4" data-toggle="modal" data-target="#createRoomModal">Create Room</a>-->
+                                <!--                                <a href="javascript:void(0);" class="btn btn-light mt-4" data-toggle="modal" data-target="#createRoomModal">Create Room</a>-->
                             </div>
                             <div class="col-md-6">
                                 <img src="/img/OBJECTS.png" class="float-right" alt="img">

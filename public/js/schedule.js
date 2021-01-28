@@ -73,7 +73,8 @@ new Vue({
         invite_others: false,
         see_guest_list: false,
         timezones: [],
-        selected_tz_name: 'Asia/Calcutta'
+        selected_tz_name: 'Asia/Calcutta',
+        room_uid: null
     },
     mounted: function () {
         eventBus.$on('SCHEDULE_CLICKED', (event) => {
@@ -93,11 +94,13 @@ new Vue({
                     this.mute_video = data.mute_video
                     this.record_meeting = data.record_meeting
                     this.description = data.description
-                    var a = data.events_tag.split(',')
                     this.event_tags = []
-                    a.forEach(x => {
-                        this.event_tags.push(x)
-                    })
+                    if (data.event_tags) {
+                        var a = data.events_tag.split(',')
+                        a.forEach(x => {
+                            this.event_tags.push(x)
+                        })
+                    }
                     this.notification_type = data.notification_type
                     this.notification_minutes = data.notification_minutes
                     this.selected_tz_name = data.timezone
@@ -124,6 +127,7 @@ new Vue({
                                 console.log(gp.name)
                         }
                     })
+                    this.room_uid = data.room.uid
 
                     $('#schedule-meeting-modal').modal('show');
                 }).catch(error => console.error(error))
@@ -132,10 +136,12 @@ new Vue({
         eventBus.$on('CALENDAR_CLICKED', (selectedDateString) => {
             var selectedDate = new Date(selectedDateString)
             this.start_date = selectedDateString
+            this.id = null
             this.repeat_day = selectedDate.getDay();
         })
 
         eventBus.$on('FULL_CALENDAR_CLICKED', (date) => {
+            this.id = null
             this.start_date = this.getOnlyDate(date)
             this.start_time = this.getOnlyTime(date)
             this.repeat_day = date.getDay();
@@ -262,6 +268,21 @@ new Vue({
                 minutes = '0' + minutes;
 
             return [hours, minutes].join(':');
+        },
+        startMeeting() {
+            let authenticity_token = $('#authenticity_token').val();
+            var form = document.createElement("form")
+            var tokenEl = document.createElement("input")
+
+            form.method = "POST"
+            form.action = `/${this.room_uid}/start`
+
+            tokenEl.value = authenticity_token
+            tokenEl.name = "authenticity_token"
+
+            form.appendChild(tokenEl);
+            document.body.appendChild(form)
+            form.submit();
         }
     }
 })
