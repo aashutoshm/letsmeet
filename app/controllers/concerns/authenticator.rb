@@ -48,7 +48,8 @@ module Authenticator
       url = if cookies[:return_to] && !dont_redirect_to.include?(cookies[:return_to])
         cookies[:return_to]
       elsif user.role.get_permission("can_create_rooms")
-        user.main_room
+        # user.main_room
+        "/"
       else
         cant_create_rooms_path
       end

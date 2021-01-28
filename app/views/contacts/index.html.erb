@@ -14,10 +14,9 @@
                         <div class="col-md-4">
                             <form>
                                 <div class="input-group call-inv sear-b">
-                <span class="input-group-prepend">
-                    <div class="input-group-text bg-transparent border-right-0 call-sear"><i
-                        class="fa fa-search"></i></div>
-                </span>
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-transparent border-right-0 call-sear"><i class="fa fa-search"></i></span>
+                                    </div>
                                     <input class="form-control py-2 border-left-0 border call-invi" name="keyword"
                                            type="search"
                                            value="<%= params[:keyword] %>"
@@ -100,25 +99,39 @@
     </div>
 </div>
 
-<div class="modal fade modal-danger" id="confirmDelete" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true" tabindex="-1">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    Confirm Delete
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    <span class="sr-only">close</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Delete this user?</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button class="btn btn-danger" id="confirm">Confirm Delete</button>
+<% content_for :modals do %>
+    <div class="modal fade modal-danger" id="confirmDelete" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Confirm Delete
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Delete this user?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger" id="confirm">Confirm Delete</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+<% end %>
+
+<% content_for :scripts do %>
+    <script>
+        $('#confirmDelete').on('show.bs.modal', function (e) {
+            var form = $(e.relatedTarget).closest('form');
+            $(this).find('.modal-footer #confirm').data('form', form);
+        });
+        $('#confirmDelete').find('.modal-footer #confirm').on('click', function () {
+            $(this).data('form').submit();
+        });
+    </script>
+<% end %>

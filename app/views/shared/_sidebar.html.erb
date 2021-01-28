@@ -2,15 +2,11 @@
 
     <!-- Sidebar - Brand -->
     <div class="sidebar-brand d-flex align-items-center">
-        <%= link_to (current_user ? home_page : root_path), class: "d-flex align-items-center" do %>
-            <% begin %>
-                <div class="sidebar-brand-icon">
-                    <i class="fas fa-video"></i>
-                </div>
-                <div class="sidebar-brand-text mx-3">LetsMeet</div>
-            <% rescue %>
-                <%= t("administrator.site_settings.branding.invalid") %>
-            <% end %>
+        <%= link_to root_path, class: "d-flex align-items-center" do %>
+            <div class="sidebar-brand-icon">
+                <i class="fas fa-video"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3">LetsMeet</div>
         <% end %>
         <div class="text-center d-none d-md-inline collapse-btn">
             <button class="rounded-circle border-0 shadow" id="sidebarToggle"></button>
@@ -21,8 +17,8 @@
     <!-- <hr class="sidebar-divider my-0"> -->
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item <%= params[:controller] == 'rooms' && params[:action] == 'show' ? 'border-right-primary' : '' %>">
-        <%= link_to home_page, class: "nav-link" do %>
+    <li class="nav-item <%= params[:controller] == 'main' && params[:action] == 'index' ? 'border-right-primary' : '' %>">
+        <%= link_to root_path, class: "nav-link" do %>
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
         <% end %>

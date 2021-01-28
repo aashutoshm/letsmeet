@@ -1,7 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins');
 
-body {
-    font-family: 'Poppins';
+* {
+    outline: none !important;
+}
+
+html, body {
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: white;
 }
 
 .sidebar-dark .nav-item.active .nav-link {
@@ -777,4 +785,43 @@ h3.mt-10 {
     line-height: 8rem;
     max-width: 8rem;
     font-size: 5rem;
+}
+
+.wrapper {
+    position: relative;
+    height: auto;
+    min-height: calc(100% - 130px);
+}
+
+/**
+Icon input
+ */
+.input-icon {
+    position: relative;
+}
+
+.input-icon .form-control:not(:last-child) {
+    padding-right: 2.5rem;
+}
+
+.input-icon .form-control:not(:first-child) {
+    padding-left: 2.5rem;
+}
+
+.input-icon-addon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    color: #9aa0ac;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    pointer-events: none;
+}
+
+.input-icon-addon:last-child {
+    left: auto;
+    right: 0;
 }
