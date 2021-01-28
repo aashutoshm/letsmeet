@@ -11,7 +11,7 @@ class SchedulesController < ApplicationController
     def ajax
         start_datetime = params[:start]
         end_datetime = params[:end]
-        schedules = Schedule.where('start_date BETWEEN :start_datetime AND :end_datetime OR repeat_weekly = true AND user_id = :user_id', {
+        schedules = Schedule.where('(start_date BETWEEN :start_datetime AND :end_datetime OR repeat_weekly = true) AND user_id = :user_id', {
             :start_datetime => start_datetime,
             :end_datetime => end_datetime,
             :user_id => current_user.id

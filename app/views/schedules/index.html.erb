@@ -148,28 +148,33 @@
                             this.notification_minutes = data.notification_minutes
                             this.selected_tz_name = data.timezone
                             this.guests = []
-                            data.guests.forEach(g => {
-                                this.guests.push(g.username)
-                            })
+                            if (data.guests) {
+                                data.guests.forEach(g => {
+                                    this.guests.push(g.username)
+                                })
+                            }
 
-                            data.guest_permissions.forEach(gp => {
-                                switch (gp.name) {
-                                    case "everyone_as_admin":
-                                        this.everyone_as_admin = gp.value
-                                        break
-                                    case "modify_meeting":
-                                        this.modify_meeting = gp.value
-                                        break
-                                    case "invite_others":
-                                        this.invite_others = gp.value
-                                        break
-                                    case "see_guest_list":
-                                        this.see_guest_list = gp.value
-                                        break
-                                    default:
-                                        console.log(gp.name)
-                                }
-                            })
+                            if (data.guest_permissions) {
+                                data.guest_permissions.forEach(gp => {
+                                    switch (gp.name) {
+                                        case "everyone_as_admin":
+                                            this.everyone_as_admin = gp.value
+                                            break
+                                        case "modify_meeting":
+                                            this.modify_meeting = gp.value
+                                            break
+                                        case "invite_others":
+                                            this.invite_others = gp.value
+                                            break
+                                        case "see_guest_list":
+                                            this.see_guest_list = gp.value
+                                            break
+                                        default:
+                                            console.log(gp.name)
+                                    }
+                                })
+                            }
+
                             this.room_uid = data.room.uid
 
                             $('#schedule-meeting-modal').modal('show');
