@@ -15,7 +15,7 @@ class Schedule < ApplicationRecord
     end
 
     def get_week_day
-        case repeat_day
+        case repeat_day.to_i
         when 0
             "Sun"
         when 1

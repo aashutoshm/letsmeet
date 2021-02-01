@@ -2,14 +2,14 @@ You have been invited to the following event.
 
 Meeting: <%= @schedule.title %>
 
-When: <% if @schedule.repeat_weekly %>Every <%= @schedule.get_week_day %><% else %><%= @schedule.start_date.strftime('%b %d, %Y') %> - <%= @schedule.end_date.strftime('%b %d, %Y') %><% end %>, <% if @schedule.all_day %>All day<% else %><%= @schedule.start_time.strftime('%H:%M') %> - <%= @schedule.end_time.strftime('%H:%M') %><% end %>, <%= @schedule.timezone %>
+When: <% if @schedule.is_repeat %>Every <% if @schedule.repeat_type == 'd' %>day<% elsif @schedule.repeat_type == 'w' %><%= @schedule.get_week_day %><% elsif @schedule.repeat_type == 'm' %><%= @schedule.repeat_day %><% elsif @schedule.repeat_type == 'y' %><%= @schedule.repeat_day %><% end %><% else %><%= @schedule.start_date.strftime('%b %d, %Y') %> - <%= @schedule.end_date.strftime('%b %d, %Y') %><% end %>, <% if @schedule.all_day %>All day<% else %><%= @schedule.start_time.strftime('%H:%M') %> - <%= @schedule.end_time.strftime('%H:%M') %><% end %>, <%= @schedule.timezone %>
 
 Where: <%= @schedule.room.invite_url %>
 
 Who: <%= @schedule.user.email %> - organizer
 
 <% @schedule.guests.each do |guest| %>
-    <%= guest.username %>
+    <%= guest.email %> (<%= guest.username %>)
 <% end %>
 
 Description -

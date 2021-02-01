@@ -244,6 +244,9 @@ class SchedulesController < ApplicationController
                 ScheduleMailer.with(schedule: @schedule).invite_email.deliver_later
             elsif @schedule.notification_type == "SMS"
                 NotifySMSJob.perform_later(@schedule.user.phone, @schedule.get_sms_content)
+                @schedule.guests.each do |guest|
+                    NotifySMSJob.perform_later(guest.phone, @schedule.get_sms_content)
+                end
             end
 
             render json: {
@@ -362,6 +365,9 @@ class SchedulesController < ApplicationController
                     ScheduleMailer.with(schedule: schedule).invite_email.deliver_later
                 elsif schedule.notification_type == "SMS"
                     NotifySMSJob.perform_later(schedule.user.phone, schedule.get_sms_content)
+                    schedule.guests.each do |guest|
+                        NotifySMSJob.perform_later(guest.phone, schedule.get_sms_content)
+                    end
                 end
 
             end
