@@ -87,6 +87,7 @@
 
 <% content_for :scripts do %>
     <script>
+        Vue.component('v-select', VueSelect.VueSelect);
         var eventBus = new Vue();
 
         new Vue({
@@ -118,7 +119,8 @@
                 see_guest_list: false,
                 timezones: [],
                 selected_tz_name: 'Asia/Calcutta',
-                room_uid: null
+                room_uid: null,
+                contacts:  []
             },
             mounted: function () {
                 eventBus.$on('SCHEDULE_CLICKED', (event) => {
@@ -160,12 +162,7 @@
                             this.notification_type = data.notification_type
                             this.notification_minutes = data.notification_minutes
                             this.selected_tz_name = data.timezone
-                            this.guests = []
-                            if (data.guests) {
-                                data.guests.forEach(g => {
-                                    this.guests.push(g.username)
-                                })
-                            }
+                            this.guests = data.guests
 
                             if (data.guest_permissions) {
                                 data.guest_permissions.forEach(gp => {
@@ -476,6 +473,31 @@
                 },
                 clearDateRange() {
                     $('#daterange').val('')
+                },
+                fetchGuests(search, loading) {
+                    if (search.length) {
+                        loading(true)
+                        axios.get(`/contacts/ajax?keyword=${search}`)
+                            .then(res => res.data)
+                            .then(data => {
+                                this.contacts = data
+                                loading(false)
+                            })
+                            .catch(error => {
+                                console.error(error)
+                                loading(false)
+                            })
+                    }
+                },
+                onGuestSelected(selectedOption) {
+                    var i = this.guests.findIndex(g => g.email == selectedOption.email)
+                    if (i < 0) {
+                        this.guests.push({
+                            username: selectedOption.first_name + ' ' + selectedOption.last_name,
+                            email: selectedOption.email,
+                            phone: selectedOption.phone1 ? (selectedOption.code1 + selectedOption.phone1) : (selectedOption.phone2 ? (selectedOption.code2 + selectedOption.phone2) : "")
+                        })
+                    }
                 }
             }
         })

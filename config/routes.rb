@@ -117,6 +117,7 @@ Rails.application.routes.draw do
     get '/contacts', to: 'contacts#index', as: :contacts
     get '/contacts/create', to: 'contacts#new', as: :new_contact
     post '/contacts/create', to: 'contacts#create'
+    get '/contacts/ajax', to: 'contacts#ajax'
     get '/contacts/:id/edit', to: 'contacts#edit', as: :edit_contact
     get '/contacts/:id', to: 'contacts#show', as: :contact
     put '/contacts/:id/edit', to: 'contacts#update', as: :update_contact

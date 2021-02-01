@@ -15,6 +15,15 @@ class ContactsController < ApplicationController
         @pagy, @contacts = pagy_array(contacts, page: params[:page], items: 12)
     end
 
+    # GET /contacts/ajax
+    def ajax
+        contacts = Contact.where("user_id = :user_id AND (first_name LIKE :keyword OR last_name LIKE :keyword OR email LIKE :keyword)", {
+            :user_id => current_user.id,
+            :keyword => "%#{params[:keyword]}%"
+        })
+        render json: contacts
+    end
+
     # GET /contacts/create
     def new
         @contact = Contact.new

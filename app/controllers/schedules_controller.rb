@@ -229,12 +229,13 @@ class SchedulesController < ApplicationController
                 )
             end
             if params[:guests].length > 0
-                guest_names = params[:guests]
-                guest_names.each do |guest_name|
-                    # print "Key: ", key, " | Value: ", value, "\n"
+                guests = params[:guests]
+                guests.each do |guest|
                     Guest.create(
                         schedule_id: @schedule.id,
-                        username: guest_name
+                        username: guest[:username],
+                        email: guest[:email],
+                        phone: guest[:phone]
                     )
                 end
             end
@@ -345,12 +346,14 @@ class SchedulesController < ApplicationController
                 schedule.guests.destroy_all
 
                 if params[:guests].length > 0
-                    guest_names = params[:guests]
-                    guest_names.each do |guest_name|
+                    guests = params[:guests]
+                    guests.each do |guest|
                         # print "Key: ", key, " | Value: ", value, "\n"
                         Guest.create(
                             schedule_id: schedule.id,
-                            username: guest_name
+                            username: guest[:username],
+                            email: guest[:email],
+                            phone: guest[:phone]
                         )
                     end
                 end

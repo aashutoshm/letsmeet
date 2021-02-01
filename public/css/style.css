@@ -829,3 +829,12 @@ Icon input
 .ui-datepicker-year {
     display: none;
 }
+
+.input-group > .v-select {
+    flex: 1 1 auto;
+    width: 1%;
+}
+
+.vs__dropdown-toggle {
+    padding: .375rem .75rem;
+}
