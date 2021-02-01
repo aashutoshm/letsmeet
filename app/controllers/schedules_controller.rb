@@ -10,8 +10,13 @@ class SchedulesController < ApplicationController
     # GET /schedules/ajax
     def ajax
         start_datetime = params[:start]
+        s = Time.parse(start_datetime)
         end_datetime = params[:end]
-        schedules = Schedule.where('(start_date BETWEEN :start_datetime AND :end_datetime OR repeat_weekly = true) AND user_id = :user_id', {
+        e = Time.parse(end_datetime)
+        avg = Time.at((s.to_f + e.to_f) / 2)
+        avg_date = Date.parse(avg.to_s)
+
+        schedules = Schedule.where('(start_date BETWEEN :start_datetime AND :end_datetime OR is_repeat = true) AND user_id = :user_id', {
             :start_datetime => start_datetime,
             :end_datetime => end_datetime,
             :user_id => current_user.id
@@ -21,29 +26,98 @@ class SchedulesController < ApplicationController
 
         schedules.each do |schedule|
             if schedule.all_day
-                if schedule.repeat_weekly
-                    events.push({
-                                    "daysOfWeek": [schedule.repeat_day],
-                                    "title": schedule.title,
-                                    "id" => schedule.id,
-                                })
+                if schedule.is_repeat
+                    case schedule.repeat_type
+                    when "d"
+                        events.push({
+                                        "id" => schedule.id,
+                                        "title" => schedule.title,
+                                        "start" => start_datetime,
+                                        "end" => end_datetime,
+                                        "allDay" => true,
+                                    })
+                    when "w"
+                        events.push({
+                                        "id" => schedule.id,
+                                        "title" => schedule.title,
+                                        "allDay" => true,
+                                        "daysOfWeek" => [
+                                            schedule.repeat_day
+                                        ]
+                                    })
+                    when "m"
+                        avg_date = avg_date.change(day: schedule.repeat_day.to_i)
+
+                        events.push({
+                                        "id" => schedule.id,
+                                        "title" => schedule.title,
+                                        "start" => avg_date.strftime("%Y-%m-%d"),
+                                        "allDay" => true,
+                                    })
+                    when "y"
+                        m = schedule.repeat_day.split("/")[0]
+                        d = schedule.repeat_day.split("/")[1]
+                        start = Date.today.change(month: m.to_i, day: d.to_i)
+                        events.push({
+                                        "id" => schedule.id,
+                                        "title" => schedule.title,
+                                        "start" => start.strftime("%Y-%m-%d"),
+                                        "allDay" => true,
+                                    })
+                    else
+                        # type code here
+                    end
                 else
                     events.push({
                                     "title" => schedule.title,
                                     "start" => schedule.start_date,
                                     "end" => schedule.end_date,
                                     "id" => schedule.id,
+                                    "allDay" => true
                                 })
                 end
             else
-                if schedule.repeat_weekly
-                    events.push({
-                                    "daysOfWeek": [schedule.repeat_day],
-                                    "startTime": schedule.start_time.strftime("%H:%M"),
-                                    "endTime": schedule.end_time.strftime("%H:%M"),
-                                    "title": schedule.title,
-                                    "id" => schedule.id,
-                                })
+                if schedule.is_repeat
+                    case schedule.repeat_type
+                    when "d"
+                        events.push({
+                                        "startTime": schedule.start_time.strftime("%H:%M"),
+                                        "endTime": schedule.end_time.strftime("%H:%M"),
+                                        "title": schedule.title,
+                                        "id" => schedule.id,
+                                    })
+                    when "w"
+                        events.push({
+                                        "id" => schedule.id,
+                                        "title" => schedule.title,
+                                        "startTime" => schedule.start_time.strftime("%H:%M"),
+                                        "endTime" => schedule.end_time.strftime("%H:%M"),
+                                        "daysOfWeek" => [
+                                            schedule.repeat_day
+                                        ]
+                                    })
+                    when "m"
+                        avg_date = avg_date.change(day: schedule.repeat_day.to_i)
+                        events.push({
+                                        "start" => avg_date.strftime("%Y-%m-%d") + "T" + schedule.start_time.strftime("%H:%M") + ":00",
+                                        "end" => avg_date.strftime("%Y-%m-%d") + "T" + schedule.end_time.strftime("%H:%M") + ":00",
+                                        "title": schedule.title,
+                                        "id" => schedule.id,
+                                    })
+                    when "y"
+                        m = schedule.repeat_day.split("/")[0]
+                        d = schedule.repeat_day.split("/")[1]
+                        start = Date.today.change(month: m.to_i, day: d.to_i)
+                        events.push({
+                                        "id" => schedule.id,
+                                        "title" => schedule.title,
+                                        "start" => start.strftime("%Y-%m-%d") + "T" + schedule.start_time.strftime("%H:%M:00"),
+                                        "end" => start.strftime("%Y-%m-%d") + "T" + schedule.end_time.strftime("%H:%M:00"),
+                                        "allDay" => true,
+                                    })
+                    else
+                        # type code here
+                    end
                 else
                     a = schedule.start_date
                     b = schedule.end_date
@@ -52,7 +126,8 @@ class SchedulesController < ApplicationController
                         events.push({
                                         "id" => schedule.id,
                                         "title" => schedule.title,
-                                        "start" => (schedule.start_date + i).strftime("%Y-%m-%d") + "T" + schedule.start_time.strftime("%H:%M") + ":00" + "-" + schedule.end_time.strftime("%H:%M"),
+                                        "start" => (schedule.start_date + i).strftime("%Y-%m-%d") + "T" + schedule.start_time.strftime("%H:%M:00"),
+                                        "end" => (schedule.start_date + i).strftime("%Y-%m-%d") + "T" + schedule.end_time.strftime("%H:%M:00")
                                     })
                     end
                 end
@@ -125,13 +200,19 @@ class SchedulesController < ApplicationController
             @schedule.end_time = params[:end_time]
         end
 
-        if params[:repeat_weekly]
-            @schedule.repeat_weekly = params[:repeat_weekly]
-            @schedule.repeat_day = params[:repeat_day]
+        if params[:is_repeat]
+            @schedule.is_repeat = params[:is_repeat]
+            @schedule.repeat_type = params[:repeat_type]
+            if params[:repeat_type] == 'd'
+                @schedule.repeat_day = nil
+            else
+                @schedule.repeat_day = params[:repeat_day]
+            end
             @schedule.start_date = nil
             @schedule.end_date = nil
         else
-            @schedule.repeat_weekly = nil
+            @schedule.is_repeat = false
+            @schedule.repeat_type = nil
             @schedule.repeat_day = nil
             @schedule.start_date = params[:start_date]
             @schedule.end_date = params[:end_date]
@@ -226,13 +307,19 @@ class SchedulesController < ApplicationController
                 schedule.end_time = params[:end_time]
             end
 
-            if params[:repeat_weekly]
-                schedule.repeat_weekly = params[:repeat_weekly]
-                schedule.repeat_day = params[:repeat_day]
+            if params[:is_repeat]
+                schedule.is_repeat = params[:is_repeat]
+                schedule.repeat_type = params[:repeat_type]
+                if params[:repeat_type] == 'd'
+                    schedule.repeat_day = nil
+                else
+                    schedule.repeat_day = params[:repeat_day]
+                end
                 schedule.start_date = nil
                 schedule.end_date = nil
             else
-                schedule.repeat_weekly = nil
+                schedule.is_repeat = false
+                schedule.repeat_type = nil
                 schedule.repeat_day = nil
                 schedule.start_date = params[:start_date]
                 schedule.end_date = params[:end_date]

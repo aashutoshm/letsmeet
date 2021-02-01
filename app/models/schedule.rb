@@ -6,7 +6,12 @@ class Schedule < ApplicationRecord
     has_many :guests
 
     def as_json(options = {})
-        super.merge(start_time: start_time ? start_time.strftime("%H:%M") : start_time, end_time: end_time ? end_time.strftime("%H:%M") : end_time)
+        super.merge(
+            start_time: start_time ? start_time.strftime("%H:%M") : start_time,
+            end_time: end_time ? end_time.strftime("%H:%M") : end_time,
+            start_date: start_date ? start_date.strftime("%m/%d/%Y") : start_date,
+            end_date: end_date ? end_date.strftime("%m/%d/%Y") : end_date
+        )
     end
 
     def get_week_day
@@ -30,9 +35,30 @@ class Schedule < ApplicationRecord
         end
     end
 
+    def get_week_day_rr
+        case repeat_day
+        when "0"
+            "su"
+        when "1"
+            "mo"
+        when "2"
+            "tu"
+        when "3"
+            "we"
+        when "4"
+            "th"
+        when "5"
+            "fr"
+        when "6"
+            "sa"
+        else
+            ""
+        end
+    end
+
     def get_sms_content
         datetime_string = ""
-        if repeat_weekly
+        if is_repeat
             datetime_string += "Every " + get_week_day
         else
             datetime_string += start_date.strftime('%b %d, %Y') + "-" + end_date.strftime('%b %d, %Y')

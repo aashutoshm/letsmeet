@@ -1,9 +1,9 @@
 <div class="card profile">
     <div class="desc">
-        <% if current_user.image.blank? || !valid_url?(current_user.image) %>
-            <span class="avatar avatar-xxxl bg-primary"><%= current_user.first_name ? current_user.first_name.first : current_user.name.first %></span>
+        <% if current_user.avatar.attached? %>
+            <img src="<%= (url_for(current_user.avatar)) %>" class="avatar avatar-xxxl">
         <% else %>
-            <%= image_tag(current_user.image, class: "avatar avatar-xxl") %>
+            <span class="avatar avatar-xxxl bg-primary"><%= current_user.first_name ? current_user.first_name.first : current_user.name.first %></span>
         <% end %>
         <h3><%= current_user.first_name %> <%= current_user.last_name %></h3>
         <p class="title"><%= current_user.role.title %></p>

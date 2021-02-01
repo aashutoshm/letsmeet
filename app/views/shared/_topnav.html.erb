@@ -57,10 +57,10 @@
             <li class="nav-item dropdown no-arrow">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <% if current_user.image.blank? || !valid_url?(current_user.image) %>
-                        <span class="avatar bg-primary mr-2"><%= current_user.name.first %></span>
+                    <% if current_user.avatar.attached? %>
+                        <img src="<%= (url_for(current_user.avatar)) %>" class="avatar mr-2">
                     <% else %>
-                        <%= image_tag(current_user.image, id: "user-image", class: "img-profile rounded-circle mr-2") %>
+                        <span class="avatar bg-primary mr-2"><%= current_user.name.first %></span>
                     <% end %>
                     <span class="mr-2 d-none d-lg-inline text-gray-600 small"><b class="prof-color"><%= current_user.name %></b></span>
                     <span class="mr-2 d-none d-lg-inline text-gray-600 small sort-icon"><i

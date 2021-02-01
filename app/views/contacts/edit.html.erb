@@ -32,14 +32,20 @@
                         </div>
                         <div class="form-group">
                             <%= f.label :phone1, "Phone 1" %>
-                            <%= f.text_field :phone1, class: "form-control #{form_is_invalid?(@contact, :phone1)}", placeholder: 'Phone 1' %>
+                            <div class="form-inline">
+                                <%= f.text_field :phone1, class: "form-control #{form_is_invalid?(@contact, :phone1)}", placeholder: 'Phone 1' %>
+                            </div>
+                            <%= f.hidden_field :code1 %>
                             <% if @contact.errors[:phone1][0] %>
                                 <small class="text-danger">Phone 1 <%= @contact.errors[:phone1][0] %></small>
                             <% end %>
                         </div>
                         <div class="form-group">
                             <%= f.label :phone2, "Phone 2" %>
-                            <%= f.text_field :phone2, class: "form-control #{form_is_invalid?(@contact, :phone2)}", placeholder: 'Phone 2' %>
+                            <div class="form-inline">
+                                <%= f.text_field :phone2, class: "form-control #{form_is_invalid?(@contact, :phone2)}", placeholder: 'Phone 2' %>
+                            </div>
+                            <%= f.hidden_field :code2 %>
                             <% if @contact.errors[:phone2][0] %>
                                 <small class="text-danger">Phone 2 <%= @contact.errors[:phone2][0] %></small>
                             <% end %>
@@ -57,6 +63,10 @@
                             <%= f.text_area :custom_field2, class: "form-control #{form_is_invalid?(@contact, :custom_field2)}", placeholder: 'Custom Field 2' %>
                         </div>
                         <div class="form-group">
+                            <%= f.label :avatar, "Avatar" %>
+                            <%= f.file_field :avatar, class: "form-control" %>
+                        </div>
+                        <div class="form-group">
                             <button class="btn btn-primary">Save</button>
                             <button class="btn btn-secondary" type="reset">Cancel</button>
                         </div>
@@ -66,3 +76,24 @@
         </div>
     </div>
 </div>
+
+<% content_for :scripts do %>
+    <script>
+        $('#contact_phone1').CcPicker({
+            dataUrl: "/ccpicker/data.json",
+        });
+        $('#contact_phone1').on('countrySelect', function (e, i) {
+            $('#contact_code1').val('+'+ i.phoneCode)
+        })
+        $('#contact_phone2').CcPicker({
+            dataUrl: "/ccpicker/data.json"
+        });
+        $('#contact_phone2').on('countrySelect', function (e, i) {
+            $('#contact_code2').val('+'+ i.phoneCode)
+        })
+        var code1 = $('#contact_code1').val()
+        var code2 = $('#contact_code2').val()
+        $("#contact_phone1").CcPicker("setCountryByPhoneCode",code1.substring(1));
+        $("#contact_phone2").CcPicker("setCountryByPhoneCode",code2.substring(1));
+    </script>
+<% end %>

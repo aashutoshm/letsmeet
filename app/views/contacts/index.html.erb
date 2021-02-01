@@ -49,7 +49,11 @@
                                             <% end %>
                                         </div>
                                         <div class="desc">
-                                            <span class="avatar avatar-xxxl"><%= contact.first_name.first %></span>
+                                            <% if contact.avatar.attached? %>
+                                                <img class="avatar avatar-xxxl" src="<%= (url_for(contact.avatar)) %>">
+                                            <% else %>
+                                                <span class="avatar avatar-xxxl"><%= contact.first_name.first %></span>
+                                            <% end %>
                                             <h3><%= contact.first_name %> <%= contact.last_name %></h3>
                                             <% if contact.department %>
                                                 <p class="title"><%= contact.department %></p>

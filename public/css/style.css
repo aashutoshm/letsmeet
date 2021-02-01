@@ -351,12 +351,6 @@ td.col-play.sorting_1 {
     border-radius: 4%;
 }
 
-.profile img {
-    height: 100px;
-    width: 100px !important;
-    border-radius: 50%;
-}
-
 .profile .desc {
     text-align: center;
     padding-top: 50px;
@@ -485,11 +479,6 @@ tr.bg-gray {
 .pd-r20 {
     padding-right: 50px;
 }
-
-i.fa.fa-calendar {
-    color: blue;
-}
-
 
 ::-webkit-scrollbar {
     width: 5px;
@@ -835,4 +824,8 @@ Icon input
 
 #clear-search:hover {
     cursor: pointer;
+}
+
+.ui-datepicker-year {
+    display: none;
 }

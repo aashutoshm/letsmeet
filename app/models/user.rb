@@ -32,6 +32,8 @@ class User < ApplicationRecord
     has_many :contacts
     has_many :schedules
 
+    has_one_attached :avatar
+
     belongs_to :main_room, class_name: 'Room', foreign_key: :room_id, required: false
 
     has_and_belongs_to_many :roles, join_table: :users_roles # obsolete

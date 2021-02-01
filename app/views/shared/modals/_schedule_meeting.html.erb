@@ -12,17 +12,38 @@
                         <input type="text" class="form-control" v-model="title" required placeholder="Title">
                     </div>
                     <div class="form-group row">
-                        <div class="col-md-3">
-                            <input type="date" class="form-control" :disabled="repeat_weekly" :required="!repeat_weekly" v-model="start_date" placeholder="Start date">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control" :disabled="is_repeat" :required="!is_repeat" id="daterange" placeholder="Start date">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-outline-primary" @click="clearDateRange">Clear</button>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-3">
-                            <input type="date" class="form-control" :disabled="repeat_weekly" :required="!repeat_weekly" v-model="end_date" placeholder="End date">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-clock"></i>
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control" id="start_time" :disabled="all_day" :required="!all_day" placeholder="Start time">
+                            </div>
                         </div>
                         <div class="col-md-3">
-                            <input type="time" class="form-control" :disabled="all_day" :required="!all_day" v-model="start_time" placeholder="Start time">
-                        </div>
-                        <div class="col-md-3">
-                            <input type="time" class="form-control" :disabled="all_day" :required="!all_day" v-model="end_time" placeholder="End time">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-clock"></i>
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control" id="end_time" :disabled="all_day" :required="!all_day" placeholder="End time">
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -30,16 +51,22 @@
                             <option v-for="timezone in timezones" :value="timezone.value">{{ timezone.name }}</option>
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group form-inline">
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" class="custom-control-input" id="all-day" v-model="all_day">
                             <label class="custom-control-label" for="all-day">All day</label>
                         </div>
                         <div class="custom-control custom-checkbox custom-control-inline">
-                            <input type="checkbox" class="custom-control-input" id="repeat-weekly" v-model="repeat_weekly">
-                            <label class="custom-control-label" for="repeat-weekly">Repeat on weekly</label>
+                            <input type="checkbox" class="custom-control-input" id="repeat-weekly" v-model="is_repeat">
+                            <label class="custom-control-label" for="repeat-weekly">Repeat on</label>
                         </div>
-                        <select class="custom-select w-auto" id="week-day" :disabled="!repeat_weekly" :required="repeat_weekly" v-model="repeat_day">
+                        <select class="custom-select" v-model="repeat_type" :disabled="!is_repeat" :required="is_repeat">
+                            <option value="d">Daily</option>
+                            <option value="w">Weekly</option>
+                            <option value="m">Monthly</option>
+                            <option value="y">Yearly</option>
+                        </select>
+                        <select class="custom-select" id="week-day" v-if="repeat_type == 'w'" :disabled="!is_repeat" :required="is_repeat" v-model="repeat_day">
                             <option value="0">Sunday</option>
                             <option value="1">Monday</option>
                             <option value="2">Tuesday</option>
@@ -48,6 +75,39 @@
                             <option value="5">Friday</option>
                             <option value="6">Saturday</option>
                         </select>
+                        <select class="custom-select" v-if="repeat_type == 'm'" :disabled="!is_repeat" :required="is_repeat" v-model="repeat_day">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option>12</option>
+                            <option>13</option>
+                            <option>14</option>
+                            <option>15</option>
+                            <option>16</option>
+                            <option>17</option>
+                            <option>18</option>
+                            <option>19</option>
+                            <option>20</option>
+                            <option>21</option>
+                            <option>22</option>
+                            <option>23</option>
+                            <option>24</option>
+                            <option>25</option>
+                            <option>26</option>
+                            <option>27</option>
+                            <option>28</option>
+                            <option>29</option>
+                            <option>30</option>
+                        </select>
+                        <input type="text" class="form-control" id="repeat_date" v-show="repeat_type == 'y'" :disabled="!is_repeat" :required="is_repeat && repeat_type == 'y'">
                     </div>
                     <div class="form-group">
                         <label>Events</label>

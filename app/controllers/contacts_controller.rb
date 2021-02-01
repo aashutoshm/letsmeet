@@ -30,10 +30,13 @@ class ContactsController < ApplicationController
             company: params[:contact][:company],
             department: params[:contact][:department],
             phone1: params[:contact][:phone1],
+            code1: params[:contact][:code1],
             phone2: params[:contact][:phone2],
+            code2: params[:contact][:code2],
             notes: params[:contact][:notes],
             custom_field1: params[:contact][:custom_field1],
             custom_field2: params[:contact][:custom_field2],
+            avatar: params[:contact][:avatar]
         )
         if @contact.save
             redirect_to contacts_path, flash: { success: "New contact has been added." }
@@ -71,9 +74,12 @@ class ContactsController < ApplicationController
             :department,
             :phone1,
             :phone2,
+            :code1,
+            :code2,
             :notes,
             :custom_field1,
-            :custom_field2
+            :custom_field2,
+            :avatar
         )
     end
 

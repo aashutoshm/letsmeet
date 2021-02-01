@@ -271,7 +271,6 @@
 <% content_for :scripts do %>
     <script>
         var eventBus = new Vue();
-
         new Vue({
             el: '#schedule-meeting',
             data: {
@@ -282,7 +281,8 @@
                 start_time: '',
                 end_time: '',
                 all_day: false,
-                repeat_weekly: false,
+                is_repeat: false,
+                repeat_type: 'd',
                 repeat_day: 0,
                 mute_video: false,
                 mute_audio: false,
@@ -309,7 +309,44 @@
                         value: t
                     }
                 });
-                this.timezones = getTimezoneList.sort(this.sortByZone)
+                this.timezones = getTimezoneList.sort(this.sortByZone);
+                $('#daterange').daterangepicker({
+                    linkedCalendars: true,
+                    autoApply: true,
+                    minDate: moment(),
+                }, (start_date, end_date, label) => {
+                    this.start_date = start_date.format('YYYY-MM-DD')
+                    this.end_date = end_date.format('YYYY-MM-DD')
+                })
+
+                this.start_date = moment().format('YYYY-MM-DD')
+                this.end_date = moment().format('YYYY-MM-DD')
+                $('#daterange').data('daterangepicker').setStartDate(moment());
+                $('#daterange').data('daterangepicker').setEndDate(moment());
+
+                $('#start_time').timepicker().on('change', (event) => {
+                    function D(J) {
+                        return (J < 10 ? '0' : '') + J;
+                    }
+
+                    this.start_time = event.target.value
+                    var piece = this.start_time.split(":")
+                    var mins = piece[0] * 60 + +piece[1] + 25
+                    this.end_time = D(mins % (24 * 60) / 60 | 0) + ':' + D(mins % 60)
+                    $('#end_time').val(this.end_time)
+                });
+                $('#end_time').timepicker().on('change', (event) => {
+                    this.end_time = event.target.value
+                });
+
+                $('#repeat_date').datepicker({
+                    minDate: new Date((new Date()).getFullYear(), 0, 1),
+                    maxDate: new Date((new Date()).getFullYear(), 11, 31),
+                    hideIfNoPrevNext: true,
+                    dateFormat: 'mm/dd'
+                }).on('change', (event) => {
+                    this.repeat_day = event.target.value
+                })
             },
             methods: {
                 sortByZone(a, b) {
@@ -328,7 +365,8 @@
                         start_time: this.start_time,
                         end_time: this.end_time,
                         all_day: this.all_day,
-                        repeat_weekly: this.repeat_weekly,
+                        is_repeat: this.is_repeat,
+                        repeat_type: this.repeat_type,
                         repeat_day: this.repeat_day,
                         mute_video: this.mute_video,
                         mute_audio: this.mute_audio,
@@ -406,6 +444,9 @@
                     form.appendChild(tokenEl);
                     document.body.appendChild(form)
                     form.submit();
+                },
+                clearDateRange() {
+                    $('#daterange').val('')
                 }
             }
         })

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_26_181357) do
+ActiveRecord::Schema.define(version: 2021_01_13_020116) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,7 +44,9 @@ ActiveRecord::Schema.define(version: 2021_01_26_181357) do
     t.string "department"
     t.string "email"
     t.string "phone1"
+    t.string "code1"
     t.string "phone2"
+    t.string "code2"
     t.text "notes"
     t.string "custom_field1"
     t.string "custom_field2"
@@ -145,14 +147,18 @@ ActiveRecord::Schema.define(version: 2021_01_26_181357) do
 
   create_table "schedules", force: :cascade do |t|
     t.bigint "user_id"
+    t.bigint "room_id"
     t.string "title", null: false
     t.date "start_date"
     t.date "end_date"
     t.time "start_time"
     t.time "end_time"
+    t.string "timezone"
+    t.string "job_id"
     t.boolean "all_day", default: false
-    t.boolean "repeat_weekly", default: false
-    t.integer "repeat_day"
+    t.boolean "is_repeat", default: false
+    t.string "repeat_type"
+    t.string "repeat_day"
     t.boolean "mute_video", default: false
     t.boolean "mute_audio", default: false
     t.boolean "record_meeting", default: false
@@ -162,9 +168,6 @@ ActiveRecord::Schema.define(version: 2021_01_26_181357) do
     t.integer "notification_minutes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "timezone"
-    t.string "job_id"
-    t.bigint "room_id"
     t.index ["room_id"], name: "index_schedules_on_room_id", unique: true
     t.index ["user_id"], name: "index_schedules_on_user_id"
   end
@@ -210,6 +213,7 @@ ActiveRecord::Schema.define(version: 2021_01_26_181357) do
     t.string "first_name"
     t.string "last_name"
     t.string "phone"
+    t.string "code"
     t.string "city"
     t.string "state"
     t.string "postal_code"
