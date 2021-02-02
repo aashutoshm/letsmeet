@@ -8,7 +8,7 @@ class ContactsController < ApplicationController
 
     # GET /contacts
     def index
-        contacts = Contact.where("user_id = :user_id AND (first_name LIKE :keyword OR last_name LIKE :keyword OR email LIKE :keyword)", {
+        contacts = Contact.where("user_id = :user_id AND (first_name ILIKE :keyword OR last_name ILIKE :keyword OR email ILIKE :keyword)", {
             :user_id => current_user.id,
             :keyword => "%#{params[:keyword]}%"
         })
@@ -17,7 +17,7 @@ class ContactsController < ApplicationController
 
     # GET /contacts/ajax
     def ajax
-        contacts = Contact.where("user_id = :user_id AND (first_name LIKE :keyword OR last_name LIKE :keyword OR email LIKE :keyword)", {
+        contacts = Contact.where("user_id = :user_id AND (first_name ILIKE :keyword OR last_name ILIKE :keyword OR email ILIKE :keyword)", {
             :user_id => current_user.id,
             :keyword => "%#{params[:keyword]}%"
         })
