@@ -20,6 +20,7 @@ require 'bbb_api'
 
 class User < ApplicationRecord
     include Deleteable
+    include Rails.application.routes.url_helpers
 
     after_create :setup_user
 
@@ -253,5 +254,9 @@ class User < ApplicationRecord
 
     def role_provider
         Rails.configuration.loadbalanced_configuration ? provider : "greenlight"
+    end
+
+    def avatar_url
+        rails_blob_path(self.avatar) if self.avatar.attached?
     end
 end

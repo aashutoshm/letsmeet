@@ -133,5 +133,39 @@
     })
 </script>
 <%= yield :scripts %>
+<script src="/js/action_cable.js"></script>
+<script>
+    $(document).ready(function () {
+        if (!("Notification" in window)) {
+            alert("This browser does not support desktop notification");
+        } else if (Notification.permission == "granted") {
+            createChannel()
+            console.log("notification granted")
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission()
+                .then(function (permission) {
+                    if (permission == "granted") {
+                        createChannel()
+                        console.log("notification granted")
+                    }
+                })
+        }
+    })
+
+    function createChannel() {
+        var consumer = ActionCable.createConsumer();
+        ActionCable.logger.enabled = true
+
+        consumer.subscriptions.create("WebNotificationsChannel", {
+            received(data) {
+                console.log("Web Notification: " + data);
+                new Notification({
+                    title: data["title"],
+                    body: data["body"]
+                })
+            }
+        })
+    }
+</script>
 </body>
 </html>

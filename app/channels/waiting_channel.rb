@@ -17,7 +17,7 @@
 # with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
 class WaitingChannel < ApplicationCable::Channel
-  def subscribed
-    stream_from "#{params[:roomuid]}_waiting_channel"
-  end
+    def subscribed
+        stream_from "#{params[:roomuid]}_waiting_channel"
+    end
 end

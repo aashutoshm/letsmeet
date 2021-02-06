@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_13_020116) do
+ActiveRecord::Schema.define(version: 2021_02_06_091345) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,11 +77,10 @@ ActiveRecord::Schema.define(version: 2021_01_13_020116) do
 
   create_table "guests", force: :cascade do |t|
     t.bigint "schedule_id"
-    t.string "username", null: false
-    t.string "email", null: false
-    t.string "phone", null: false
+    t.bigint "contact_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["contact_id"], name: "index_guests_on_contact_id"
     t.index ["schedule_id"], name: "index_guests_on_schedule_id"
   end
 
@@ -93,6 +92,15 @@ ActiveRecord::Schema.define(version: 2021_01_13_020116) do
     t.datetime "updated_at", null: false
     t.index ["invite_token"], name: "index_invitations_on_invite_token"
     t.index ["provider"], name: "index_invitations_on_provider"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "title"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
   create_table "role_permissions", force: :cascade do |t|

@@ -118,9 +118,12 @@ class ScheduleMailer < ApplicationMailer
             content: cal.to_ical
         }
 
-        emails = @schedule.guests.collect(&:email).join(",")
-        print(@schedule.user.email + "," + emails)
+        emails = []
+        emails.push(@schedule.user.email)
+        @schedule.guests.each do |guest|
+            emails.push(guest.contact.email)
+        end
 
-        mail to: @schedule.user.email + "," + emails, subject: "Letsmeet Meeting"
+        mail to: emails.join(","), subject: "Letsmeet Meeting"
     end
 end

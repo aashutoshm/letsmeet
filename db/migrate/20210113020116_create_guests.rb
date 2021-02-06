@@ -2,9 +2,7 @@ class CreateGuests < ActiveRecord::Migration[5.2]
     def change
         create_table :guests do |t|
             t.belongs_to :schedule, index: true
-            t.string :username, null: false
-            t.string :email, null: false
-            t.string :phone
+            t.belongs_to :contact, index: true
             t.timestamps
         end
     end

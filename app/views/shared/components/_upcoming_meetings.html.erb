@@ -1,0 +1,44 @@
+<div id="upcoming-events">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between sche-p">
+        <h5 class="m-0 font-weight-bold e33 pd-t20">Upcoming Meetings</h5>
+    </div>
+    <div class="card-body p-0">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item" v-for="(schedule, index) in schedules">
+                <h5 class="text-black font-weight-bold">
+                    <b class="b66">{{ schedule.title }}</b>
+                    <template v-if="schedule.events_tag">
+                        <span class="badge" :class="{'badge-danger': tag == 'important', 'badge-primary': tag == 'normal', 'badge-secondary': tag == 'general'}" v-for="tag in getEventTags(schedule.events_tag)">{{ tag }}</span>
+                    </template>
+                </h5>
+                <h6>{{ getFullDate(schedule.start_date) }}</h6>
+                <h6 v-if="schedule.all_day">All day</h6>
+                <h6 v-else>{{ schedule.start_time }} to {{ schedule.end_time }}</h6>
+                <div>
+                    <a :href="'mailto:' + guest.contact.email" v-for="guest in schedule.guests" :title="guest.contact.email" class="mr-1">
+                        <img :src="guest.contact.avatar_url" alt="" class="avatar" v-if="guest.contact.avatar_url">
+                        <span class="avatar" :title="guest.contact.email" v-else>{{guest.contact.first_name[0]}}</span>
+                    </a>
+                </div>
+                <div class="container-fluid p-0">
+                    <div class="row">
+                        <div class="col-md-12 pt-2 pb-2">
+                            <h5 class="new-color">Organized by</h5>
+                        </div>
+                        <div class="col-md-2">
+                            <img :src="schedule.user.avatar_url" alt="" class="avatar float-left" v-if="schedule.user.avatar_url">
+                            <span class="avatar bg-primary" v-else>{{schedule.user.name[0]}}</span>
+                        </div>
+                        <div class="col-md-10">
+                            <h6 class="mb-0"><b>{{getFullName(schedule.user)}}</b></h6>
+                            <small class="new-color"><a :href="'mailto:' + schedule.user.email">{{schedule.user.email}}</a></small>
+                        </div>
+                    </div>
+                    <div class="mt-2 text-right">
+                        <button class="btn btn-sm btn-primary" @click="startMeeting(schedule)" type="button">Start</button>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

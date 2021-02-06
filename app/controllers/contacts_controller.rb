@@ -21,7 +21,7 @@ class ContactsController < ApplicationController
             :user_id => current_user.id,
             :keyword => "%#{params[:keyword]}%"
         })
-        render json: contacts
+        render json: contacts.as_json(methods: [:avatar_url])
     end
 
     # GET /contacts/create

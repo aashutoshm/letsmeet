@@ -69,4 +69,17 @@ namespace :user do
             puts "Email: #{u[:email]}"
         end
     end
+
+    desc "Notify users"
+    task :notify => :environment do |task|
+        users = User.all
+        users.each do |user|
+            WebNotificationsChannel.broadcast_to(
+                user,
+                title: 'New things!',
+                body: 'All the news fit to print'
+            )
+        end
+    end
+
 end

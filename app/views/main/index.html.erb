@@ -220,45 +220,7 @@
 
         <div class="col-xl-3 col-lg-3 upcoming-events">
             <div class="card shadow mb-4">
-                <div id="upcoming-events">
-                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between sche-p">
-                        <h5 class="m-0 font-weight-bold e33 pd-t20">Upcoming Meetings</h5>
-                    </div>
-                    <div class="card-body p-0">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item" v-for="(schedule, index) in schedules">
-                                <h5 class="text-black font-weight-bold">
-                                    <b class="b66">{{ schedule.title }}</b>
-                                    <template v-if="schedule.events_tag">
-                                        <span class="badge" :class="{'badge-danger': tag == 'important', 'badge-primary': tag == 'normal', 'badge-secondary': tag == 'general'}" v-for="tag in getEventTags(schedule.events_tag)">{{ tag }}</span>
-                                    </template>
-                                </h5>
-                                <h6>{{ getFullDate(schedule.start_date) }}</h6>
-                                <h6 v-if="schedule.all_day">All day</h6>
-                                <h6 v-else>{{schedule.start_time}} to {{ schedule.end_time }}</h6>
-                                <div>
-                                    <span class="avatar" v-for="guest in schedule.guests">{{guest.username[0]}}</span>
-                                </div>
-                                <div class="container-fluid p-0">
-                                    <div class="row">
-                                        <div class="col-md-12 pt-2 pb-2">
-                                            <h5 class="new-color">Organized by</h5>
-                                        </div>
-
-                                        <div class="col-md-2">
-                                            <img src="/img/bot.png" alt="" class="float-left" v-if="schedule.user.image">
-                                            <span class="avatar bg-primary" v-else>{{schedule.user.name[0]}}</span>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <h6 class="mb-0"><b>{{getFullName(schedule.user)}}</b></h6>
-                                            <small class="new-color">{{schedule.user.email}}</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <%= render 'shared/components/upcoming_meetings' %>
             </div>
         </div>
     </div>
@@ -302,7 +264,9 @@
                 timezones: [],
                 selected_tz_name: 'Asia/Calcutta',
                 room_uid: null,
-                contacts:  []
+                contacts:  [],
+                access_code: '',
+                date_range: ''
             },
             mounted: function () {
                 const getTimezoneList = moment.tz.names().map(t => {
@@ -319,6 +283,11 @@
                 }, (start_date, end_date, label) => {
                     this.start_date = start_date.format('YYYY-MM-DD')
                     this.end_date = end_date.format('YYYY-MM-DD')
+                    if (this.start_date == this.end_date) {
+                        this.date_range = start_date.format('MM/DD/YYYY')
+                    } else {
+                        this.date_range = start_date.format('MM/DD/YYYY') + ' - ' + end_date.format('MM/DD/YYYY')
+                    }
                 })
 
                 this.start_date = moment().format('YYYY-MM-DD')
@@ -466,14 +435,24 @@
                     }
                 },
                 onGuestSelected(selectedOption) {
-                    var i = this.guests.findIndex(g => g.email == selectedOption.email)
+                    var i = this.guests.findIndex(g => g.id == selectedOption.id)
                     if (i < 0) {
-                        this.guests.push({
-                            username: selectedOption.first_name + ' ' + selectedOption.last_name,
-                            email: selectedOption.email,
-                            phone: selectedOption.phone1 ? (selectedOption.code1 + selectedOption.phone1) : (selectedOption.phone2 ? (selectedOption.code2 + selectedOption.phone2) : "")
-                        })
+                        this.guests.push(selectedOption)
                     }
+                },
+                generateAccessCode() {
+                    const accessCodeLength = 6
+                    var validCharacters = "0123456789"
+                    var accessCode = ""
+
+                    for( var i = 0; i < accessCodeLength; i++){
+                        accessCode += validCharacters.charAt(Math.floor(Math.random() * validCharacters.length));
+                    }
+
+                    this.access_code = accessCode
+                },
+                removeAccessCode() {
+                    this.access_code = ''
                 }
             }
         })
@@ -504,7 +483,22 @@
                     } else {
                         return user.name
                     }
-                }
+                },
+                startMeeting(schedule) {
+                    let authenticity_token = $('#authenticity_token').val();
+                    var form = document.createElement("form")
+                    var tokenEl = document.createElement("input")
+
+                    form.method = "POST"
+                    form.action = `/${schedule.room.uid}/start`
+
+                    tokenEl.value = authenticity_token
+                    tokenEl.name = "authenticity_token"
+
+                    form.appendChild(tokenEl);
+                    document.body.appendChild(form)
+                    form.submit();
+                },
             }
         })
 

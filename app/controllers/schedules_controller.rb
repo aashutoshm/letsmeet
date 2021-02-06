@@ -147,7 +147,9 @@ class SchedulesController < ApplicationController
             :user_id => current_user.id
         })
 
-        render json: schedules.to_json(:include => [:user, :guests])
+        render json: schedules.as_json(
+            include: [:room, guests: {include: [contact: {methods: [:avatar_url]}]}, user: {methods: [:avatar_url]}]
+        )
     end
 
     # POST /schedules/store
@@ -158,7 +160,7 @@ class SchedulesController < ApplicationController
             }, status: 400
         end
 
-        room = Room.new(name: params[:title])
+        room = Room.new(name: params[:title], access_code: params[:access_code])
         room.owner = current_user
         room.room_settings = create_room_settings_string(
             {
@@ -233,9 +235,7 @@ class SchedulesController < ApplicationController
                 guests.each do |guest|
                     Guest.create(
                         schedule_id: @schedule.id,
-                        username: guest[:username],
-                        email: guest[:email],
-                        phone: guest[:phone]
+                        contact_id: guest[:id],
                     )
                 end
             end
@@ -265,7 +265,10 @@ class SchedulesController < ApplicationController
     def show
         schedule = current_user.schedules.where("id = ?", params[:id]).first()
         if schedule
-            render json: schedule.to_json(:include => [:guests, :guest_permissions, :room])
+            # render json: schedule.to_json(:include => [:guests, :guest_permissions, :room])
+            render json: schedule.as_json(
+                include: [:guest_permissions, :room, guests: {include: [contact: {methods: [:avatar_url]}]}]
+            )
         else
             render json: {
                 "message": "Not found"
@@ -278,6 +281,7 @@ class SchedulesController < ApplicationController
         schedule = current_user.schedules.where("id = ?", params[:id]).first()
         if schedule
             room = schedule.room
+            room.access_code = params[:access_code]
             room.room_settings = create_room_settings_string(
                 {
                     "recording": params[:record_meeting]
@@ -354,9 +358,7 @@ class SchedulesController < ApplicationController
                         # print "Key: ", key, " | Value: ", value, "\n"
                         Guest.create(
                             schedule_id: schedule.id,
-                            username: guest[:username],
-                            email: guest[:email],
-                            phone: guest[:phone]
+                            contact_id: guest[:id]
                         )
                     end
                 end
@@ -366,7 +368,7 @@ class SchedulesController < ApplicationController
                 elsif schedule.notification_type == "SMS"
                     NotifySMSJob.perform_later(schedule.user.phone, schedule.get_sms_content)
                     schedule.guests.each do |guest|
-                        NotifySMSJob.perform_later(guest.phone, schedule.get_sms_content)
+                        NotifySMSJob.perform_later(guest.contact.phone, schedule.get_sms_content)
                     end
                 end
 
