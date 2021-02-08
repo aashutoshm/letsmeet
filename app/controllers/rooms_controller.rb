@@ -82,6 +82,8 @@ class RoomsController < ApplicationController
                 recordings(@room.bbb_id, params.permit(:search, :column, :direction), true)
 
             @pagy, @recordings = pagy_array(recs)
+
+            render "show", layout: "application"
         else
             return redirect_to root_path, flash: { alert: I18n.t("room.invalid_provider") } if incorrect_user_domain
 

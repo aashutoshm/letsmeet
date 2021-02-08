@@ -13,4 +13,14 @@ class Contact < ApplicationRecord
     def avatar_url
         rails_blob_path(self.avatar) if self.avatar.attached?
     end
+
+    def get_phone
+        if phone1
+            code1 + phone1
+        elsif phone2
+            code2 + phone2
+        else
+            ""
+        end
+    end
 end

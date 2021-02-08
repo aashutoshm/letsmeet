@@ -10,6 +10,9 @@
         </li>
     <% end %>
     <li class="nav-item">
+        <a class="nav-link <%= params[:action] == 'notifications' ? 'active' : '' %>" href="<%= notifications_path(current_user) %>">Notifications</a>
+    </li>
+    <li class="nav-item">
         <%= link_to delete_account_path, class: "nav-link #{"active" if active_page == "delete_account"}" do %>
             <%= t("settings.delete.title") %>
         <% end %>

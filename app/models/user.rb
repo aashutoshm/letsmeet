@@ -32,6 +32,7 @@ class User < ApplicationRecord
     has_many :shared_access
     has_many :contacts
     has_many :schedules
+    has_many :notifications
 
     has_one_attached :avatar
 

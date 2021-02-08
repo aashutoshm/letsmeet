@@ -95,6 +95,7 @@ Rails.application.routes.draw do
         get '/:user_uid/edit', to: 'users#edit', as: :edit_user
         get '/:user_uid/change_password', to: 'users#change_password', as: :change_password
         get '/:user_uid/delete_account', to: 'users#delete_account', as: :delete_account
+        get '/:user_uid/notifications', to: 'users#notifications', as: :notifications
         post '/:user_uid/edit', to: 'users#update', as: :update_user
         post '/:user_uid/change_password', to: 'users#update_password', as: :update_password
         delete '/:user_uid', to: 'users#destroy', as: :delete_user
@@ -129,6 +130,8 @@ Rails.application.routes.draw do
     post '/schedules/store', to: 'schedules#store', as: :store_schedule
     get '/schedules/:id', to: 'schedules#show', as: :show_schedule
     post '/schedules/:id', to: 'schedules#update', as: :update_schedule
+
+    get '/notifications/recent', to: 'notifications#recent', as: :recent_notifications
 
     # Room resources.
     resources :rooms, only: [:create, :show, :destroy], param: :room_uid, path: '/'

@@ -24,7 +24,7 @@ class UsersController < ApplicationController
     include Recorder
     include Rolify
 
-    before_action :find_user, only: [:edit, :change_password, :delete_account, :update, :update_password]
+    before_action :find_user, only: [:edit, :change_password, :delete_account, :update, :update_password, :notifications]
     before_action :ensure_unauthenticated_except_twitter, only: [:create]
     before_action :check_user_signup_allowed, only: [:create]
     before_action :check_admin_of, only: [:edit, :change_password, :delete_account]
@@ -81,6 +81,11 @@ class UsersController < ApplicationController
 
     # GET /u/:user_uid/delete_account
     def delete_account
+    end
+
+    # GET /u/:user_uid/notifications
+    def notifications
+        @notifications = @user.notifications
     end
 
     # POST /u/:user_uid/edit

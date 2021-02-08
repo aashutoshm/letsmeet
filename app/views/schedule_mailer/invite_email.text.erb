@@ -6,10 +6,14 @@ When: <% if @schedule.is_repeat %>Every <% if @schedule.repeat_type == 'd' %>day
 
 Where: <%= @schedule.room.invite_url %>
 
+<% if @schedule.room.access_code %>
+Access code: <%= @schedule.room.access_code %>
+<% end %>
+
 Who: <%= @schedule.user.email %> - organizer
 
 <% @schedule.guests.each do |guest| %>
-    <%= guest.email %> (<%= guest.username %>)
+    <%= guest.contact.email %> (<%= guest.contact.first_name %> <%= guest.contact.last_name %>)
 <% end %>
 
 Description -

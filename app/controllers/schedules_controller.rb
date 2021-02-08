@@ -148,7 +148,7 @@ class SchedulesController < ApplicationController
         })
 
         render json: schedules.as_json(
-            include: [:room, guests: {include: [contact: {methods: [:avatar_url]}]}, user: {methods: [:avatar_url]}]
+            include: [:room, guests: { include: [contact: { methods: [:avatar_url] }] }, user: { methods: [:avatar_url] }]
         )
     end
 
@@ -240,13 +240,23 @@ class SchedulesController < ApplicationController
                 end
             end
 
+            WebNotificationsChannel.broadcast_to(
+                @schedule.user,
+                title: @schedule.title,
+                body: "",
+                onclick_url: @schedule.room.invite_url
+            )
+            Notification.create(title: @schedule.title, user_id: @schedule.user_id, onclick_url: @schedule.room.invite_url)
+
             if @schedule.notification_type == "Email"
                 ScheduleMailer.with(schedule: @schedule).invite_email.deliver_later
             elsif @schedule.notification_type == "SMS"
-                NotifySMSJob.perform_later(@schedule.user.phone, @schedule.get_sms_content)
+                numbers = []
+                numbers.push(@schedule.user.phone)
                 @schedule.guests.each do |guest|
-                    NotifySMSJob.perform_later(guest.phone, @schedule.get_sms_content)
+                    numbers.push(guest.contact.get_phone)
                 end
+                NotifySMSJob.perform_later(numbers.join(","), @schedule.get_sms_content)
             end
 
             render json: {
@@ -267,7 +277,7 @@ class SchedulesController < ApplicationController
         if schedule
             # render json: schedule.to_json(:include => [:guests, :guest_permissions, :room])
             render json: schedule.as_json(
-                include: [:guest_permissions, :room, guests: {include: [contact: {methods: [:avatar_url]}]}]
+                include: [:guest_permissions, :room, guests: { include: [contact: { methods: [:avatar_url] }] }]
             )
         else
             render json: {
@@ -363,13 +373,23 @@ class SchedulesController < ApplicationController
                     end
                 end
 
+                WebNotificationsChannel.broadcast_to(
+                    schedule.user,
+                    title: schedule.title,
+                    body: "",
+                    onclick_url: schedule.room.invite_url
+                )
+                Notification.create(title: schedule.title, user_id: schedule.user_id, onclick_url: schedule.room.invite_url)
+
                 if schedule.notification_type == "Email"
                     ScheduleMailer.with(schedule: schedule).invite_email.deliver_later
                 elsif schedule.notification_type == "SMS"
-                    NotifySMSJob.perform_later(schedule.user.phone, schedule.get_sms_content)
+                    numbers = []
+                    numbers.push(schedule.user.phone)
                     schedule.guests.each do |guest|
-                        NotifySMSJob.perform_later(guest.contact.phone, schedule.get_sms_content)
+                        numbers.push(guest.contact.get_phone)
                     end
+                    NotifySMSJob.perform_later(numbers.join(","), schedule.get_sms_content)
                 end
 
             end

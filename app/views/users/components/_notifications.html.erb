@@ -1,0 +1,5 @@
+<% @notifications.each do |notification| %>
+    <div class="alert alert-primary">
+        <a href="<%= notification.onclick_url %>"><%= notification.title %></a>
+    </div>
+<% end %>
