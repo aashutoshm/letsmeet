@@ -71,7 +71,7 @@
                 description: '',
                 events_tag: '',
                 notification_type: 'Email',
-                notification_minutes: 10,
+                notification_minutes: 5,
                 guests: [],
                 guest_name: '',
                 guest_permissions: [],
@@ -99,9 +99,9 @@
                                 // $('#daterange').data('daterangepicker').setStartDate(moment(this.start_date));
                                 // $('#daterange').data('daterangepicker').setEndDate(moment(this.end_date));
                                 if (this.start_date == this.end_date) {
-                                    this.date_range = moment(data.start_date).format('MM/DD/YYYY')
+                                    this.date_range = moment(data.start_date).format('DD/MM/YYYY')
                                 } else {
-                                    this.date_range = moment(data.start_date).format('MM/DD/YYYY') + ' - ' + moment(data.end_date).format('MM/DD/YYYY')
+                                    this.date_range = moment(data.start_date).format('DD/MM/YYYY') + ' - ' + moment(data.end_date).format('DD/MM/YYYY')
                                 }
                             }
                             this.start_time = data.start_time
@@ -280,9 +280,9 @@
                     this.start_date = start_date.format('YYYY-MM-DD')
                     this.end_date = end_date.format('YYYY-MM-DD')
                     if (this.start_date == this.end_date) {
-                        this.date_range = start_date.format('MM/DD/YYYY')
+                        this.date_range = start_date.format('DD/MM/YYYY')
                     } else {
-                        this.date_range = start_date.format('MM/DD/YYYY') + ' - ' + end_date.format('MM/DD/YYYY')
+                        this.date_range = start_date.format('DD/MM/YYYY') + ' - ' + end_date.format('DD/MM/YYYY')
                     }
                 })
 
@@ -305,7 +305,7 @@
                     minDate: new Date((new Date()).getFullYear(), 0, 1),
                     maxDate: new Date((new Date()).getFullYear(), 11, 31),
                     hideIfNoPrevNext: true,
-                    dateFormat: 'mm/dd'
+                    dateFormat: 'dd/mm'
                 }).on('change', (event) => {
                     this.repeat_day = event.target.value
                 })
@@ -480,6 +480,9 @@
                 },
                 removeAccessCode() {
                     this.access_code = ''
+                },
+                openDateRangePicker() {
+                    $('#daterange').data('daterangepicker').show();
                 }
             }
         })

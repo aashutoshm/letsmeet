@@ -317,7 +317,7 @@
                 description: '',
                 events_tag: '',
                 notification_type: 'Email',
-                notification_minutes: 10,
+                notification_minutes: 5,
                 guests: [],
                 guest_name: '',
                 guest_permissions: [],
@@ -348,9 +348,9 @@
                     this.start_date = start_date.format('YYYY-MM-DD')
                     this.end_date = end_date.format('YYYY-MM-DD')
                     if (this.start_date == this.end_date) {
-                        this.date_range = start_date.format('MM/DD/YYYY')
+                        this.date_range = start_date.format('DD/MM/YYYY')
                     } else {
-                        this.date_range = start_date.format('MM/DD/YYYY') + ' - ' + end_date.format('MM/DD/YYYY')
+                        this.date_range = start_date.format('DD/MM/YYYY') + ' - ' + end_date.format('DD/MM/YYYY')
                     }
                 })
 
@@ -378,7 +378,7 @@
                     minDate: new Date((new Date()).getFullYear(), 0, 1),
                     maxDate: new Date((new Date()).getFullYear(), 11, 31),
                     hideIfNoPrevNext: true,
-                    dateFormat: 'mm/dd'
+                    dateFormat: 'dd/mm'
                 }).on('change', (event) => {
                     this.repeat_day = event.target.value
                 })
@@ -481,7 +481,7 @@
                     form.submit();
                 },
                 clearDateRange() {
-                    $('#daterange').val('')
+                    $('#daterange').val('');
                 },
                 fetchGuests(search, loading) {
                     if (search.length) {
@@ -517,6 +517,15 @@
                 },
                 removeAccessCode() {
                     this.access_code = ''
+                },
+                openDateRangePicker() {
+                    $('#daterange').data('daterangepicker').show();
+                },
+                showStartTimePicker() {
+                    $('#start_time').timepicker('show')
+                },
+                showEndTimePicker() {
+                    $('#end_time').timepicker('show')
                 }
             }
         })

@@ -651,15 +651,15 @@
     var ok_button = document.createElement("button");
     ok_button.setAttribute("tabindex", "-1");
     ok_button.innerHTML = settings.okButtonText;      // チェックマーク
-    var cancel_button = document.createElement("button");
-    cancel_button.setAttribute("tabindex", "-1");
-    cancel_button.innerHTML = settings.cancelButtonText;  // バツマーク
+    // var cancel_button = document.createElement("button");
+    // cancel_button.setAttribute("tabindex", "-1");
+    // cancel_button.innerHTML = settings.cancelButtonText;  // バツマーク
 
     // assemble timepicker
     select_div.appendChild(hour_select);
     select_div.appendChild(min_select);
     button_div.appendChild(ok_button);
-    button_div.appendChild(cancel_button);
+    // button_div.appendChild(cancel_button);
     picker.appendChild(header_div);
     picker.appendChild(select_div);
     picker.appendChild(button_div);
@@ -671,8 +671,8 @@
     button_div.className = "row";
     hour_header.className = "text-center col-6";
     min_header.className = "text-center col-6";
-    ok_button.className = "col-6 btn btn-outline-primary ok-button";
-    cancel_button.className = "col-6 btn btn-outline-secondary cancel-button";
+    ok_button.className = "col-12 btn btn-outline-primary ok-button";
+    // cancel_button.className = "col-6 btn btn-outline-secondary cancel-button";
 
     if (settings.use12HourClock){
       // if using 12-hour clock, widen the picker to 18rem

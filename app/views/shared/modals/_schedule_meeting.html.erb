@@ -14,7 +14,7 @@
                     <div class="form-group row">
                         <div class="col-md-6">
                             <div class="input-group">
-                                <div class="input-group-prepend">
+                                <div class="input-group-prepend" @click="openDateRangePicker">
                                     <span class="input-group-text">
                                         <i class="fa fa-calendar"></i>
                                     </span>
@@ -27,7 +27,7 @@
                         </div>
                         <div class="col-md-3">
                             <div class="input-group">
-                                <div class="input-group-prepend">
+                                <div class="input-group-prepend" @click="showStartTimePicker">
                                     <span class="input-group-text">
                                         <i class="fa fa-clock"></i>
                                     </span>
@@ -37,7 +37,7 @@
                         </div>
                         <div class="col-md-3">
                             <div class="input-group">
-                                <div class="input-group-prepend">
+                                <div class="input-group-prepend" @click="showEndTimePicker">
                                     <span class="input-group-text">
                                         <i class="fa fa-clock"></i>
                                     </span>
@@ -58,7 +58,7 @@
                         </div>
                         <div class="custom-control custom-checkbox custom-control-inline">
                             <input type="checkbox" class="custom-control-input" id="repeat-weekly" v-model="is_repeat">
-                            <label class="custom-control-label" for="repeat-weekly">Repeat on</label>
+                            <label class="custom-control-label" for="repeat-weekly">Repeat</label>
                         </div>
                         <select class="custom-select" v-model="repeat_type" :disabled="!is_repeat" :required="is_repeat">
                             <option value="d">Daily</option>
@@ -167,8 +167,13 @@
                                 <option>SMS</option>
                             </select>
                             <select class="custom-select w-auto mr-2" v-model="notification_minutes">
+                                <option value="5">5 Minutes</option>
                                 <option value="10">10 Minutes</option>
                                 <option value="20">20 Minutes</option>
+                                <option value="30">30 Minutes</option>
+                                <option value="40">40 Minutes</option>
+                                <option value="50">50 Minutes</option>
+                                <option value="60">60 Minutes</option>
                             </select>
                         </div>
                     </div>
@@ -198,7 +203,7 @@
                         <div>
                             <div class="custom-control custom-checkbox custom-control-inline">
                                 <input type="checkbox" class="custom-control-input" id="everyone-admin" v-model="everyone_as_admin">
-                                <label class="custom-control-label" for="everyone-admin">Everyone as admin</label>
+                                <label class="custom-control-label" for="everyone-admin">Join as admin</label>
                             </div>
                             <div class="custom-control custom-checkbox custom-control-inline">
                                 <input type="checkbox" class="custom-control-input" id="modify-meeting" v-model="modify_meeting">
