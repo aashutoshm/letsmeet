@@ -145,16 +145,16 @@
                     <div class="form-group row align-items-center">
                         <label class="col-form-label col-md-3">Events Tag</label>
                         <div class="col-md-9">
-                            <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" v-model="event_tags" value="important" id="important-checkbox">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" class="custom-control-input" v-model="events_tag" value="important" id="important-checkbox">
                                 <label class="custom-control-label" for="important-checkbox">Important</label>
                             </div>
-                            <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" v-model="event_tags" value="normal" id="normal-checkbox">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" class="custom-control-input" v-model="events_tag" value="normal" id="normal-checkbox">
                                 <label class="custom-control-label" for="normal-checkbox">Normal</label>
                             </div>
-                            <div class="custom-control custom-checkbox custom-control-inline">
-                                <input type="checkbox" class="custom-control-input" v-model="event_tags" value="general" id="general-checkbox">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" class="custom-control-input" v-model="events_tag" value="general" id="general-checkbox">
                                 <label class="custom-control-label" for="general-checkbox">General</label>
                             </div>
                         </div>

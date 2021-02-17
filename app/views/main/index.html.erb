@@ -315,7 +315,7 @@
                 mute_audio: false,
                 record_meeting: false,
                 description: '',
-                event_tags: [],
+                events_tag: '',
                 notification_type: 'Email',
                 notification_minutes: 10,
                 guests: [],
@@ -407,7 +407,7 @@
                         mute_audio: this.mute_audio,
                         record_meeting: this.record_meeting,
                         description: this.description,
-                        event_tags: this.event_tags,
+                        events_tag: this.events_tag,
                         notification_type: this.notification_type,
                         notification_minutes: this.notification_minutes,
                         guests: this.guests,
@@ -535,9 +535,6 @@
                     .catch(error => console.error(error))
             },
             methods: {
-                getEventTags(tag_string) {
-                    return tag_string.split(",")
-                },
                 getFullDate(dateString) {
                     return new Date(dateString).toDateString();
                 },

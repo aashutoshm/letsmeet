@@ -184,13 +184,9 @@ class SchedulesController < ApplicationController
             mute_video: params[:mute_video],
             mute_audio: params[:mute_audio],
             record_meeting: params[:record_meeting],
-            timezone: params[:timezone]
+            timezone: params[:timezone],
+            events_tag: params[:events_tag]
         )
-
-        if params[:event_tags].length > 0
-            event_tags = params[:event_tags]
-            @schedule.events_tag = event_tags.join(",")
-        end
 
         if params[:all_day]
             @schedule.all_day = params[:all_day]
@@ -310,10 +306,7 @@ class SchedulesController < ApplicationController
             schedule.mute_audio = params[:mute_audio]
             schedule.record_meeting = params[:record_meeting]
             schedule.timezone = params[:timezone]
-            if params[:event_tags].length > 0
-                event_tags = params[:event_tags]
-                schedule.events_tag = event_tags.join(",")
-            end
+            schedule.events_tag = params[:events_tag]
 
             if params[:all_day]
                 schedule.all_day = params[:all_day]
