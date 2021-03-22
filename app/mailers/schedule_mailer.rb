@@ -7,6 +7,7 @@ class ScheduleMailer < ApplicationMailer
         require 'icalendar/tzinfo'
 
         @schedule = params[:schedule]
+        @emails = params[:emails]
 
         cal = Icalendar::Calendar.new
 
@@ -118,12 +119,6 @@ class ScheduleMailer < ApplicationMailer
             content: cal.to_ical
         }
 
-        emails = []
-        emails.push(@schedule.user.email)
-        @schedule.guests.each do |guest|
-            emails.push(guest.contact.email)
-        end
-
-        mail to: emails.join(","), subject: "Letsmeet Meeting"
+        mail to: @emails.join(","), subject: "Letsmeet Meeting"
     end
 end

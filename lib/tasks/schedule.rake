@@ -14,9 +14,19 @@ namespace :schedule do
                 notification_time = Time.new(Date.today.year, Date.today.month, Date.today.day, 9, 0, 0) - schedule.notification_minutes.minutes
             end
             if schedule.notification_type == "Email"
-                ScheduleMailer.with(schedule: schedule).invite_email.deliver_later(wait_until: notification_time.in_time_zone(schedule.timezone))
+                emails = []
+                emails.push(schedule.user.email)
+                schedule.guests.each do |guest|
+                    emails.push(guest.contact.email)
+                end
+                ScheduleMailer.with(schedule: schedule, emails: emails).invite_email.deliver_later(wait_until: notification_time.in_time_zone(schedule.timezone))
             elsif schedule.notification_type == "SMS"
-                NotifySMSJob.set(wait_until: notification_time.in_time_zone(schedule.timezone)).perform_later(schedule.user.phone, schedule.get_sms_content)
+                numbers = []
+                numbers.push(schedule.user.phone)
+                schedule.guests.each do |guest|
+                    numbers.push(guest.contact.get_phone)
+                end
+                NotifySMSJob.set(wait_until: notification_time.in_time_zone(schedule.timezone)).perform_later(numbers.join(","), schedule.get_sms_content)
             end
         end
     end

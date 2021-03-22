@@ -516,6 +516,21 @@
                     } else {
                         return user.name
                     }
+                },
+                startMeeting(schedule) {
+                    let authenticity_token = $('#authenticity_token').val();
+                    var form = document.createElement("form")
+                    var tokenEl = document.createElement("input")
+
+                    form.method = "POST"
+                    form.action = `/${schedule.room.uid}/start`
+
+                    tokenEl.value = authenticity_token
+                    tokenEl.name = "authenticity_token"
+
+                    form.appendChild(tokenEl);
+                    document.body.appendChild(form)
+                    form.submit();
                 }
             }
         })

@@ -245,7 +245,12 @@ class SchedulesController < ApplicationController
             Notification.create(title: @schedule.title, user_id: @schedule.user_id, onclick_url: @schedule.room.invite_url)
 
             if @schedule.notification_type == "Email"
-                ScheduleMailer.with(schedule: @schedule).invite_email.deliver_later
+                emails = []
+                emails.push(@schedule.user.email)
+                @schedule.guests.each do |guest|
+                    emails.push(guest.contact.email)
+                end
+                ScheduleMailer.with(schedule: @schedule, emails: emails).invite_email.deliver_later
             elsif @schedule.notification_type == "SMS"
                 numbers = []
                 numbers.push(@schedule.user.phone)
@@ -375,7 +380,12 @@ class SchedulesController < ApplicationController
                 Notification.create(title: schedule.title, user_id: schedule.user_id, onclick_url: schedule.room.invite_url)
 
                 if schedule.notification_type == "Email"
-                    ScheduleMailer.with(schedule: schedule).invite_email.deliver_later
+                    emails = []
+                    emails.push(schedule.user.email)
+                    schedule.guests.each do |guest|
+                        emails.push(guest.contact.email)
+                    end
+                    ScheduleMailer.with(schedule: schedule, emails: emails).invite_email.deliver_later
                 elsif schedule.notification_type == "SMS"
                     numbers = []
                     numbers.push(schedule.user.phone)
