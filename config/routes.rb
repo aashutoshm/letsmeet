@@ -17,18 +17,12 @@
 # with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
 Rails.application.routes.draw do
-    namespace :api do
-        get '/contacts', to: 'invite#contacts'
-        get '/guests', to: 'invite#guests'
-        get '/invite', to: 'invite#invite'
-    end
-
     get '/health_check', to: 'health_check#all'
 
-    # # Error routes.
-    # match '/401', to: 'errors#unauthorized', via: :all, as: :unauthorized
-    # match '/404', to: 'errors#not_found', via: :all, as: :not_found
-    # match '/500', to: 'errors#internal_error', via: :all, as: :internal_error
+    # Error routes.
+    match '/401', to: 'errors#unauthorized', via: :all, as: :unauthorized
+    match '/404', to: 'errors#not_found', via: :all, as: :not_found
+    match '/500', to: 'errors#internal_error', via: :all, as: :internal_error
 
     # Signin/Signup routes.
     get '/signin', to: 'sessions#signin', as: :signin
@@ -144,6 +138,12 @@ Rails.application.routes.draw do
 
     # Join a room by UID
     post '/room/join', to: 'rooms#join_specific_room', as: :join_room
+
+    namespace :api do
+        get '/contacts', to: 'invite#contacts'
+        get '/guests', to: 'invite#guests'
+        get '/invite', to: 'invite#invite'
+    end
 
     # Extended room routes.
     scope '/:room_uid' do
