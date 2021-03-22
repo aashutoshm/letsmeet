@@ -247,7 +247,8 @@ class SchedulesController < ApplicationController
             if @schedule.notification_type == "Email"
                 emails = []
                 emails.push(@schedule.user.email)
-                @schedule.guests.each do |guest|
+                guests = Guest.where("schedule_id = ?", @schedule.id)
+                guests.each do |guest|
                     emails.push(guest.contact.email)
                 end
                 ScheduleMailer.with(schedule: @schedule, emails: emails).invite_email.deliver_later
@@ -382,7 +383,8 @@ class SchedulesController < ApplicationController
                 if schedule.notification_type == "Email"
                     emails = []
                     emails.push(schedule.user.email)
-                    schedule.guests.each do |guest|
+                    guests = Guest.where("schedule_id = ?", schedule.id)
+                    guests.each do |guest|
                         emails.push(guest.contact.email)
                     end
                     ScheduleMailer.with(schedule: schedule, emails: emails).invite_email.deliver_later
