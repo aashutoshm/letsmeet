@@ -14,12 +14,12 @@ module Api
 
         # GET /api/contacts
         def contacts
-            sql = "select c.* from contacts c left join users u on c.user_id = u.id where u.uid = :uid"
-            contacts = Contact.find_by_sql([sql, { :uid => params[:uid] }])
+            sql = "select c.* from contacts c left join users u on c.user_id = u.id where u.uid = :uid and (c.first_name ILIKE :keyword OR c.last_name ILIKE :keyword OR c.email ILIKE :keyword)"
+            contacts = Contact.find_by_sql([sql, { :uid => params[:uid], :keyword => "%#{params[:keyword]}%" }])
             render json: contacts.as_json(methods: [:avatar_url])
         end
 
-        # POST /api/guests
+        # GET /api/invite
         def invite
             bbb_id = params[:uid]
             contact_id = params[:contact_id]
@@ -36,6 +36,10 @@ module Api
                 numbers.push(schedule.user.phone)
                 NotifySMSJob.perform_later(numbers.join(","), @schedule.get_sms_content)
             end
+
+            render json: {
+                invited: true,
+            }
         end
     end
 end

@@ -20,7 +20,7 @@ Rails.application.routes.draw do
     namespace :api do
         get '/contacts', to: 'invite#contacts'
         get '/guests', to: 'invite#guests'
-        post '/invite', to: 'invite#invite'
+        get '/invite', to: 'invite#invite'
     end
 
     get '/health_check', to: 'health_check#all'
