@@ -13,17 +13,18 @@ namespace :schedule do
             else
                 notification_time = Time.new(Date.today.year, Date.today.month, Date.today.day, 9, 0, 0) - schedule.notification_minutes.minutes
             end
+            guests = Guest.where("schedule_id = ?", schedule.id)
             if schedule.notification_type == "Email"
                 emails = []
                 emails.push(schedule.user.email)
-                schedule.guests.each do |guest|
+                guests.each do |guest|
                     emails.push(guest.contact.email)
                 end
                 ScheduleMailer.with(schedule: schedule, emails: emails).invite_email.deliver_later(wait_until: notification_time.in_time_zone(schedule.timezone))
             elsif schedule.notification_type == "SMS"
                 numbers = []
                 numbers.push(schedule.user.phone)
-                schedule.guests.each do |guest|
+                guests.each do |guest|
                     numbers.push(guest.contact.get_phone)
                 end
                 NotifySMSJob.set(wait_until: notification_time.in_time_zone(schedule.timezone)).perform_later(numbers.join(","), schedule.get_sms_content)

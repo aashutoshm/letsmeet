@@ -244,10 +244,10 @@ class SchedulesController < ApplicationController
             )
             Notification.create(title: @schedule.title, user_id: @schedule.user_id, onclick_url: @schedule.room.invite_url)
 
+            guests = Guest.where("schedule_id = ?", @schedule.id)
             if @schedule.notification_type == "Email"
                 emails = []
                 emails.push(@schedule.user.email)
-                guests = Guest.where("schedule_id = ?", @schedule.id)
                 guests.each do |guest|
                     emails.push(guest.contact.email)
                 end
@@ -255,7 +255,7 @@ class SchedulesController < ApplicationController
             elsif @schedule.notification_type == "SMS"
                 numbers = []
                 numbers.push(@schedule.user.phone)
-                @schedule.guests.each do |guest|
+                guests.each do |guest|
                     numbers.push(guest.contact.get_phone)
                 end
                 NotifySMSJob.perform_later(numbers.join(","), @schedule.get_sms_content)
@@ -380,10 +380,10 @@ class SchedulesController < ApplicationController
                 )
                 Notification.create(title: schedule.title, user_id: schedule.user_id, onclick_url: schedule.room.invite_url)
 
+                guests = Guest.where("schedule_id = ?", schedule.id)
                 if schedule.notification_type == "Email"
                     emails = []
                     emails.push(schedule.user.email)
-                    guests = Guest.where("schedule_id = ?", schedule.id)
                     guests.each do |guest|
                         emails.push(guest.contact.email)
                     end
@@ -391,7 +391,7 @@ class SchedulesController < ApplicationController
                 elsif schedule.notification_type == "SMS"
                     numbers = []
                     numbers.push(schedule.user.phone)
-                    schedule.guests.each do |guest|
+                    guests.each do |guest|
                         numbers.push(guest.contact.get_phone)
                     end
                     NotifySMSJob.perform_later(numbers.join(","), schedule.get_sms_content)
