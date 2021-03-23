@@ -33,8 +33,8 @@ module Api
                 ScheduleMailer.with(schedule: schedule, emails: emails).invite_email.deliver_later
             elsif schedule.notification_type == "SMS"
                 numbers = []
-                numbers.push(schedule.user.phone)
-                NotifySMSJob.perform_later(numbers.join(","), @schedule.get_sms_content)
+                numbers.push(contact.get_phone)
+                NotifySMSJob.perform_later(numbers.join(","), schedule.get_sms_content)
             end
 
             render json: {
