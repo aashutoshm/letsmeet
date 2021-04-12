@@ -56,6 +56,13 @@ class AdminsController < ApplicationController
         @tab = params[:tab] || "appearance"
     end
 
+    # GET /admins/schedules
+    def schedules
+        @search = params[:search] || ""
+        schedules = Schedule.all
+        @pagy, @schedules = pagy_array(schedules, items: 20)
+    end
+
     # GET /admins/server_recordings
     def server_recordings
         server_rooms = rooms_list_for_recordings
