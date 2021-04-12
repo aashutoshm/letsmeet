@@ -15,11 +15,13 @@
                 <% @schedules.each do |schedule| %>
                     <tr>
                         <td><%= schedule.id %></td>
-                        <td><%= schedule.user_id %></td>
+                        <td><%= schedule.user.name %></td>
                         <td><%= schedule.room_id %></td>
                         <td><%= schedule.title %></td>
                         <td>
-
+                            <%= button_to admin_delete_schedule_path(schedule.id), method: :delete, class: "btn btn-sm btn-danger" do %>
+                                <i class="fa fa-trash"></i>
+                            <% end %>
                         </td>
                     </tr>
                 <% end %>

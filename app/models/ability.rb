@@ -40,7 +40,7 @@ class Ability
              :approve, :invite, :reset, :undelete, :merge_user, :merge_list], :admin
       end
 
-      can [:server_recordings, :server_rooms, :schedules], :admin if highest_role.get_permission("can_manage_rooms_recordings")
+      can [:server_recordings, :server_rooms, :schedules, :delete_schedule], :admin if highest_role.get_permission("can_manage_rooms_recordings")
 
       if !highest_role.get_permission("can_edit_site_settings") && !highest_role.get_permission("can_edit_roles") &&
          !highest_role.get_permission("can_manage_users") && !highest_role.get_permission("can_manage_rooms_recordings")

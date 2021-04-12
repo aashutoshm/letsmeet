@@ -144,6 +144,7 @@ class RoomsController < ApplicationController
 
             # Destroy all recordings then permanently delete the room
             delete_all_recordings(@room.bbb_id)
+            @room.schedule.delete
             @room.destroy(true)
         rescue => e
             flash[:alert] = I18n.t("room.delete.fail", error: e)

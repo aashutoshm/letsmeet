@@ -63,6 +63,13 @@ class AdminsController < ApplicationController
         @pagy, @schedules = pagy_array(schedules, items: 20)
     end
 
+    # POST /admins/schedule/:schedule_id
+    def delete_schedule
+        schedule = Schedule.find(params[:schedule_id])
+        schedule.delete
+        redirect_to admin_schedules_path
+    end
+
     # GET /admins/server_recordings
     def server_recordings
         server_rooms = rooms_list_for_recordings

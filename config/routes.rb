@@ -44,6 +44,8 @@ Rails.application.routes.draw do
         get '/room_configuration', to: 'admins#room_configuration', as: :admin_room_configuration
         get '/schedules', to: 'admins#schedules', as: :admin_schedules
         get '/roles', to: 'admins#roles', as: :admin_roles
+        # Manage Schedules
+        delete '/schedule/:schedule_id', to: 'admins#delete_schedule', as: :admin_delete_schedule
         # Manage Users
         get '/edit/:user_uid', to: 'admins#edit_user', as: :admin_edit_user
         post '/ban/:user_uid', to: 'admins#ban_user', as: :admin_ban
