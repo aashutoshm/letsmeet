@@ -315,4 +315,9 @@ class ApplicationController < ActionController::Base
         @user_domain = "greenlight"
         @settings = Setting.find_or_create_by(provider: @user_domain)
     end
+
+    def generate_code(number)
+        charset = Array('A'..'Z') + Array('a'..'z') + Array('1'..'9')
+        Array.new(number) {charset.sample}.join
+    end
 end

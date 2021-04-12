@@ -1,7 +1,7 @@
 <div class="card profile">
     <div class="desc">
-        <% if current_user.avatar.attached? %>
-            <img src="<%= (url_for(current_user.avatar)) %>" class="avatar avatar-xxxl">
+        <% if current_user.image %>
+            <img src="<%= current_user.image %>" class="avatar avatar-xxxl">
         <% else %>
             <span class="avatar avatar-xxxl bg-primary"><%= current_user.first_name ? current_user.first_name.first : current_user.name.first %></span>
         <% end %>

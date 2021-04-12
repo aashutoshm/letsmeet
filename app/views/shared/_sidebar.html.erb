@@ -1,12 +1,16 @@
 <ul class="navbar-nav bg-gradient-default sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <div class="sidebar-brand d-flex align-items-center">
+    <div class="sidebar-brand d-flex align-items-center justify-content-between">
         <%= link_to root_path, class: "d-flex align-items-center" do %>
             <div class="sidebar-brand-icon">
-                <i class="fas fa-video"></i>
+                <% begin %>
+                    <%= image_tag(logo_image, class: "header-brand-img", alt: "") %>
+                <% rescue %>
+                    <%= t("administrator.site_settings.branding.invalid") %>
+                <% end %>
             </div>
-            <div class="sidebar-brand-text mx-3">LetsMeet</div>
+            <div class="sidebar-brand-text mx-3">VDO</div>
         <% end %>
         <div class="text-center d-none d-md-inline collapse-btn">
             <button class="rounded-circle border-0 shadow" id="sidebarToggle"></button>

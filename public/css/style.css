@@ -52,6 +52,10 @@ html, body {
     margin: 0 0rem 0rem;
 }
 
+.sidebar .sidebar-brand .sidebar-brand-icon img {
+    height: 2rem;
+}
+
 .border-right-primary {
     border-right: 0.25rem solid #0072F8 !important;
 }

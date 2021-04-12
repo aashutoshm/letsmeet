@@ -50,3 +50,4 @@ coverage*
 
 /atom-sftp-sync.json
 /Gemfile.lock
+/public/uploads/

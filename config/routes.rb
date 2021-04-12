@@ -60,6 +60,7 @@ Rails.application.routes.draw do
         post '/clear_cache', to: 'admins#clear_cache', as: :admin_clear_cache
         post '/clear_auth', to: 'admins#clear_auth', as: :admin_clear_auth
         post '/log_level', to: 'admins#log_level', as: :admin_log_level
+        post '/change_logo', to: 'admins#change_logo', as: :admin_change_logo
         # Room Configuration
         post '/update_room_configuration', to: 'admins#update_room_configuration', as: :admin_update_room_configuration
         # Roles

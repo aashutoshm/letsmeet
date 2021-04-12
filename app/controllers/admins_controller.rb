@@ -340,6 +340,19 @@ class AdminsController < ApplicationController
         redirect_to admin_roles_path
     end
 
+    # POST admins/change_logo
+    def change_logo
+        uploaded_io = params[:logo]
+        extname = File.extname(uploaded_io.original_filename)
+        filename = generate_code(32)
+        full_filename = filename + extname
+        File.open(Rails.root.join('public', 'uploads', full_filename), 'wb') do |file|
+            file.write(uploaded_io.read)
+        end
+        @settings.update_value("Branding Image", request.base_url + '/uploads/' + full_filename)
+        redirect_to admin_site_settings_path(tab: "appearance"), flash: { success: I18n.t("administrator.flash.settings") }
+    end
+
     private
 
     def find_user
