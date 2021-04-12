@@ -106,13 +106,15 @@ class UsersController < ApplicationController
 
         form_data = user_params
         uploaded_io = form_data[:image]
-        extname = File.extname(uploaded_io.original_filename)
-        filename = generate_code(32)
-        full_filename = filename + extname
-        File.open(Rails.root.join('public', 'uploads/avatar', full_filename), 'wb') do |file|
-            file.write(uploaded_io.read)
+        if uploaded_io != nil
+            extname = File.extname(uploaded_io.original_filename)
+            filename = generate_code(32)
+            full_filename = filename + extname
+            File.open(Rails.root.join('public', 'uploads/avatar', full_filename), 'wb') do |file|
+                file.write(uploaded_io.read)
+            end
+            form_data[:image] = request.base_url + '/uploads/avatar/' + full_filename
         end
-        form_data[:image] = request.base_url + '/uploads/avatar/' + full_filename
         if @user.update_attributes(form_data)
             @user.update_attributes(email_verified: false) if user_params[:email] != @user.email
 

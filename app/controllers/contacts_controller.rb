@@ -31,6 +31,17 @@ class ContactsController < ApplicationController
 
     # POST /contacts/create
     def create
+        uploaded_io = params[:contact][:image]
+        image_param = nil
+        if uploaded_io != nil
+            extname = File.extname(uploaded_io.original_filename)
+            filename = generate_code(32)
+            full_filename = filename + extname
+            File.open(Rails.root.join('public', 'uploads/avatar', full_filename), 'wb') do |file|
+                file.write(uploaded_io.read)
+            end
+            image_param = request.base_url + '/uploads/avatar/' + full_filename
+        end
         @contact = Contact.new(
             user_id: current_user.id,
             first_name: params[:contact][:first_name],
@@ -45,7 +56,7 @@ class ContactsController < ApplicationController
             notes: params[:contact][:notes],
             custom_field1: params[:contact][:custom_field1],
             custom_field2: params[:contact][:custom_field2],
-            avatar: params[:contact][:avatar]
+            image: image_param
         )
         if @contact.save
             redirect_to contacts_path, flash: { success: "New contact has been added." }
@@ -60,7 +71,18 @@ class ContactsController < ApplicationController
 
     # PUT /contacts/:id/edit
     def update
-        if @contact.update(contact_params)
+        form_data = contact_params
+        uploaded_io = form_data[:image]
+        if uploaded_io != nil
+            extname = File.extname(uploaded_io.original_filename)
+            filename = generate_code(32)
+            full_filename = filename + extname
+            File.open(Rails.root.join('public', 'uploads/avatar', full_filename), 'wb') do |file|
+                file.write(uploaded_io.read)
+            end
+            form_data[:image] = request.base_url + '/uploads/avatar/' + full_filename
+        end
+        if @contact.update(form_data)
             redirect_to contacts_path, flash: { success: "Information successfully updated." }
         else
             render :edit
@@ -88,7 +110,7 @@ class ContactsController < ApplicationController
             :notes,
             :custom_field1,
             :custom_field2,
-            :avatar
+            :image
         )
     end
 
