@@ -86,8 +86,8 @@ module Joiner
         invite_msg = I18n.t("invite_message")
         {
             user_is_moderator: false,
-            # meeting_logout_url: request.base_url + logout_room_path(@room),
-            meeting_logout_url: request.base_url,
+            meeting_logout_url: request.base_url + logout_room_path(@room),
+            # meeting_logout_url: request.base_url,
             moderator_message: "#{invite_msg}<br> #{request.base_url + room_path(@room)}",
             host: request.host,
             recording_default_visibility: @settings.get_value("Default Recording Visibility") == "public"
