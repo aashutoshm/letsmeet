@@ -42,17 +42,20 @@ module Api
             }
         end
 
+        # GET /api/add_contact
         def add_contact
             uid = params[:uid]
             email = params[:email]
-            user = User.where("uid = :uid", {
-                :uid => uid
-            }).first
+            user = User.where(["uid = :uid", {
+                uid: uid
+            }]).first
             contact = Contact.where("user_id = :user_id AND email = :email", {
                 :user_id => user.id,
                 :email => email
             }).first
-            unless contact
+            if contact
+                render json: contact
+            else
                 contact = Contact.new(
                     user_id: user.id,
                     email: email,
