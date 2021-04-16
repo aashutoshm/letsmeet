@@ -71,6 +71,8 @@ module BbbServer
             "meta_bbb-origin": "Greenlight",
             "meta_bbb-origin-server-name": options[:host],
             # autoStartRecording: options[:record].to_s,
+            avatarURL: options[:avatar_url],
+            logo: options[:logo]
         }
 
         create_options[:muteOnStart] = options[:mute_on_start] if options[:mute_on_start]

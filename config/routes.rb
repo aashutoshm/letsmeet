@@ -123,6 +123,7 @@ Rails.application.routes.draw do
     get '/contacts/create', to: 'contacts#new', as: :new_contact
     post '/contacts/create', to: 'contacts#create'
     get '/contacts/ajax', to: 'contacts#ajax'
+    post '/contacts/ajax', to: 'contacts#ajax_new'
     get '/contacts/:id/edit', to: 'contacts#edit', as: :edit_contact
     get '/contacts/:id', to: 'contacts#show', as: :contact
     put '/contacts/:id/edit', to: 'contacts#update', as: :update_contact
@@ -137,17 +138,17 @@ Rails.application.routes.draw do
 
     get '/notifications/recent', to: 'notifications#recent', as: :recent_notifications
 
-    # Room resources.
-    resources :rooms, only: [:create, :show, :destroy], param: :room_uid, path: '/'
-
-    # Join a room by UID
-    post '/room/join', to: 'rooms#join_specific_room', as: :join_room
-
     namespace :api do
         get '/contacts', to: 'invite#contacts'
         get '/guests', to: 'invite#guests'
         get '/invite', to: 'invite#invite'
     end
+
+    # Room resources.
+    resources :rooms, only: [:create, :show, :destroy], param: :room_uid, path: '/'
+
+    # Join a room by UID
+    post '/room/join', to: 'rooms#join_specific_room', as: :join_room
 
     # Extended room routes.
     scope '/:room_uid' do

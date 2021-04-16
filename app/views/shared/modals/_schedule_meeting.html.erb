@@ -190,11 +190,11 @@
 <!--                    </div>-->
                     <div class="form-group">
                         <label>Add Guest</label>
-                        <v-select @search="fetchGuests" :options="contacts" @option:selected="onGuestSelected" label="email"></v-select>
+                        <v-select @search="fetchGuests" :options="contacts" @option:selected="onGuestSelected" :map-keydown="handlers" label="email"></v-select>
                     </div>
                     <div class="form-group">
                         <template v-for="(guest, index) in guests">
-                            <img v-if="guest.avatar_url" class="avatar mr-2" @click="removeGuest(index)" data-toggle="tooltip" data-placement="top" :title="guest.email" :src="guest.avatar_url">
+                            <img v-if="guest.image" class="avatar mr-2" @click="removeGuest(index)" data-toggle="tooltip" data-placement="top" :title="guest.email" :src="guest.image">
                             <span v-else class="avatar bg-primary mr-2" @click="removeGuest(index)" data-toggle="tooltip" data-placement="top" :title="guest.email">{{ guest.email[0] }}</span>
                         </template>
                     </div>

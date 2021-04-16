@@ -21,7 +21,30 @@ class ContactsController < ApplicationController
             :user_id => current_user.id,
             :keyword => "%#{params[:keyword]}%"
         })
-        render json: contacts.as_json(methods: [:avatar_url])
+        render json: contacts
+    end
+
+    def ajax_new
+        email = params[:email]
+        contact = Contact.where("user_id = :user_id AND email = :email", {
+            :user_id => current_user.id,
+            :email => email
+        }).first
+        if contact
+            render json: contact
+        else
+            contact = Contact.new(
+                user_id: current_user.id,
+                email: email,
+                first_name: '',
+                last_name: ''
+            )
+            if contact.save(validate: false)
+                render json: contact
+            else
+                render json: {}, status: 400
+            end
+        end
     end
 
     # GET /contacts/create
