@@ -526,6 +526,28 @@
                 },
                 showEndTimePicker() {
                     $('#end_time').timepicker('show')
+                },
+                handlers: (map, vm) => {
+                    return {
+                        ...map, 13: event => {
+                            event.preventDefault();
+                            if (event.target.value) {
+                                const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                                if (re.test(String(event.target.value).toLowerCase())) {
+                                    let authenticity_token = $('#authenticity_token').val();
+                                    axios.post('/contacts/ajax', {
+                                        email: event.target.value,
+                                        authenticity_token: authenticity_token,
+                                    })
+                                        .then(res => {
+                                            vm.$parent.guests.push(res.data)
+                                            event.target.value = ''
+                                        })
+                                        .catch(err => console.error(err))
+                                }
+                            }
+                        }
+                    }
                 }
             }
         })
