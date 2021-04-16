@@ -41,5 +41,32 @@ module Api
                 invited: true,
             }
         end
+
+        def add_contact
+            uid = params[:uid]
+            email = params[:email]
+            user = User.where("uid = :uid", {
+                :uid => uid
+            }).first
+            contact = Contact.where("user_id = :user_id AND email = :email", {
+                :user_id => user.id,
+                :email => email
+            }).first
+            unless contact
+                contact = Contact.new(
+                    user_id: user.id,
+                    email: email,
+                    first_name: '',
+                    last_name: '',
+                    code1: '+91',
+                    code2: '+91'
+                )
+                if contact.save(validate: false)
+                    render json: contact
+                else
+                    render json: {}, status: 400
+                end
+            end
+        end
     end
 end

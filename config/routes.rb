@@ -142,6 +142,7 @@ Rails.application.routes.draw do
         get '/contacts', to: 'invite#contacts'
         get '/guests', to: 'invite#guests'
         get '/invite', to: 'invite#invite'
+        get '/add_contact', to: 'invite#add_contact'
     end
 
     # Room resources.
