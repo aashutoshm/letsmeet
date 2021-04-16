@@ -37,7 +37,9 @@ class ContactsController < ApplicationController
                 user_id: current_user.id,
                 email: email,
                 first_name: '',
-                last_name: ''
+                last_name: '',
+                code1: '+91',
+                code2: '+91'
             )
             if contact.save(validate: false)
                 render json: contact
