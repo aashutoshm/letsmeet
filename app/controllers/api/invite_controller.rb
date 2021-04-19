@@ -59,7 +59,7 @@ module Api
                 contact = Contact.new(
                     user_id: user.id,
                     email: email,
-                    first_name: '',
+                    first_name: email,
                     last_name: '',
                     code1: '+91',
                     code2: '+91'

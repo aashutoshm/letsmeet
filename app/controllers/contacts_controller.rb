@@ -36,7 +36,7 @@ class ContactsController < ApplicationController
             contact = Contact.new(
                 user_id: current_user.id,
                 email: email,
-                first_name: '',
+                first_name: email,
                 last_name: '',
                 code1: '+91',
                 code2: '+91'
