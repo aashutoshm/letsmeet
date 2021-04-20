@@ -148,7 +148,7 @@ class SchedulesController < ApplicationController
         })
 
         render json: schedules.as_json(
-            include: [:room, guests: { include: [contact: { methods: [:avatar_url] }] }, user: { methods: [:avatar_url] }]
+            include: [:room, :user, guests: { include: [:contact] }]
         )
     end
 

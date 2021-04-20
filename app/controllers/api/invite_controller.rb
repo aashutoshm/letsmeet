@@ -22,19 +22,23 @@ module Api
         # GET /api/invite
         def invite
             bbb_id = params[:uid]
-            contact_id = params[:contact_id]
+            contact_ids = JSON.parse(params[:contact_ids])
             room = Room.find_by(bbb_id: bbb_id)
-            contact = Contact.find_by(id: contact_id)
-            schedule = room.schedule
+            contact_ids.each do |contact_id|
+                contact = Contact.find_by(id: contact_id)
+                schedule = room.schedule
 
-            if schedule.notification_type == "Email"
-                emails = []
-                emails.push(contact.email)
-                ScheduleMailer.with(schedule: schedule, emails: emails).invite_email.deliver_later
-            elsif schedule.notification_type == "SMS"
-                numbers = []
-                numbers.push(contact.get_phone)
-                NotifySMSJob.perform_later(numbers.join(","), schedule.get_sms_content)
+                unless schedule == nil
+                    if schedule.notification_type == "Email"
+                        emails = []
+                        emails.push(contact.email)
+                        ScheduleMailer.with(schedule: schedule, emails: emails).invite_email.deliver_later
+                    elsif schedule.notification_type == "SMS"
+                        numbers = []
+                        numbers.push(contact.get_phone)
+                        NotifySMSJob.perform_later(numbers.join(","), schedule.get_sms_content)
+                    end
+                end
             end
 
             render json: {
