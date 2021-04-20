@@ -28,7 +28,7 @@ After=syslog.target network.target
 # http://0pointer.de/public/systemd-man/systemd.exec.html
 [Service]
 Type=simple
-WorkingDirectory=/home/ubuntu/letsmeet
+WorkingDirectory=/home/ubuntu/dev/letsmeet
 # If you use rbenv or rvm:
 ExecStart=/bin/bash -lc 'bundle exec rails server -b 127.0.0.1 -p 5000 -e development'
 # If you use the system's ruby:
@@ -64,7 +64,7 @@ After=syslog.target network.target
 # http://0pointer.de/public/systemd-man/systemd.exec.html
 [Service]
 Type=simple
-WorkingDirectory=/home/ubuntu/letsmeet
+WorkingDirectory=/home/ubuntu/dev/letsmeet
 # If you use rbenv or rvm:
 ExecStart=/bin/bash -lc 'bundle exec sidekiq -q default -q mailers'
 # If you use the system's ruby:
@@ -86,4 +86,17 @@ SyslogIdentifier=letsmeet-sidekiq
 
 [Install]
 WantedBy=multi-user.target
+```
+
+```
+sudo nano /etc/nginx/sites-available/bigbluebutton
+
+location / {
+    proxy_set_header HOST $host;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    
+    proxy_pass http://127.0.0.1:5000;
+}
 ```
