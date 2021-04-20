@@ -237,7 +237,7 @@ en:
   enter_your_name: Enter your name!
   errors:
     bigbluebutton:
-      help: Please make sure the proper steps have been taken. <a href="%{doc_link}">Learn more</a>
+      help: Please make sure the proper steps have been taken.
       message: Invalid VDO Endpoint and Secret
       title: Server Error
     internal:
