@@ -15,7 +15,7 @@ class MainController < ApplicationController
         begin
             meetings = all_running_meetings[:meetings]
         rescue BigBlueButton::BigBlueButtonException
-            flash[:alert] = I18n.t("administrator.rooms.timeout", server: I18n.t("bigbluebutton"))
+            flash[:alert] = I18n.t("administrator.rooms.timeout", server: "VDO")
             meetings = []
         end
 
