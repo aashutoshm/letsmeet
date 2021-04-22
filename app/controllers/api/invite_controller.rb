@@ -27,8 +27,11 @@ module Api
             contact_ids.each do |contact_id|
                 contact = Contact.find_by(id: contact_id)
                 schedule = room.schedule
-
                 unless schedule == nil
+                    schedule.guests.each do |guest|
+                        guest.destroy
+                    end
+                    Guest.where(schedule_id: schedule.id, contact_id: contact.id).first_or_create
                     if schedule.notification_type == "Email"
                         emails = []
                         emails.push(contact.email)
